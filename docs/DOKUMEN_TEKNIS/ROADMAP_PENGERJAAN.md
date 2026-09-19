@@ -55,27 +55,27 @@ graph TD
 **Tujuan**: Mengunci data finansial secara permanen, membangun skema basis data Supabase dengan RLS deklaratif, serta menyiapkan gerbang sanitasi input anti-XSS.  
 **Acuan SSoT**: [`SECURITY.md`](./docs/DOKUMEN_TEKNIS/SECURITY.md), [`DATABASE_ERD.md`](./docs/DOKUMEN_TEKNIS/DATABASE_ERD.md), [`API_DOCUMENTATION.md`](./docs/DOKUMEN_TEKNIS/API_DOCUMENTATION.md)
 
-- [ ] **1.1 Modul Konfigurasi Finansial Imutabel (`src/lib/config/wedding-data.ts`)**:
+- [x] **1.1 Modul Konfigurasi Finansial Imutabel (`src/lib/config/wedding-data.ts`)**:
   - Tulis konstanta server-only `WEDDING_GIFT_CONFIG` bertipe `as const` (Rekening BCA, Rekening Mandiri, aset QRIS lokal).
   - Dilarang membuat endpoint mutasi atau tabel database publik untuk data rekening/QRIS.
-- [ ] **1.2 Migrasi Database PostgreSQL (Supabase)**:
+- [x] **1.2 Migrasi Database PostgreSQL (Supabase)**:
   - Buat enum `attendance_enum ('attending', 'declined')`.
   - Buat tabel `public.rsvps` (kolom: `id`, `guest_name`, `attendance_status`, `pax_count`, `message`, `ip_hash`, `created_at`).
   - Buat indeks `idx_rsvps_created_at` untuk performa *realtime feed*.
   - Aktifkan *Row Level Security* (RLS) dengan kebijakan: publik hanya dapat `SELECT` dan `INSERT`; `UPDATE` & `DELETE` diblokir total kecuali admin.
   - Tambahkan tabel `public.rsvps` ke publikasi `supabase_realtime`.
-- [ ] **1.3 Supabase Client & Server Helpers (`@supabase/ssr`)**:
+- [x] **1.3 Supabase Client & Server Helpers (`@supabase/ssr`)**:
   - `src/lib/supabase/client.ts`: Inisialisasi browser client untuk realtime listener.
   - `src/lib/supabase/server.ts`: Inisialisasi server client yang kompatibel dengan Next.js 15 (`await cookies()`).
-- [ ] **1.4 Modul Sanitasi Input & Deteksi Phishing (`src/lib/security/sanitize.ts`)**:
+- [x] **1.4 Modul Sanitasi Input & Deteksi Phishing (`src/lib/security/sanitize.ts`)**:
   - Terapkan `DOMPurify` di sisi server untuk membersihkan seluruh tag HTML/Markdown.
   - Terapkan regex blocker terhadap tautan (`/(https?:\/\/|www\.|\.com|\.org|\.net|\.id|\.xyz|bit\.ly|t\.me)/i`). Pesan bertautan langsung ditolak.
-- [ ] **1.5 Verifikasi Cloudflare Turnstile & Rate Limiter**:
+- [x] **1.5 Verifikasi Cloudflare Turnstile & Rate Limiter**:
   - Helper verifikasi token Turnstile server-to-server (`/turnstile/v0/siteverify`).
   - In-memory / KV rate limiter berbasis hash SHA-256 IP bersalt (maksimal 3 submit per IP per 10 menit).
-- [ ] **1.6 Next.js Server Action (`src/actions/submit-rsvp.ts`)**:
+- [x] **1.6 Next.js Server Action (`src/actions/submit-rsvp.ts`)**:
   - Implementasi alur: Validasi Rate Limit $\rightarrow$ Verifikasi Turnstile $\rightarrow$ Validasi Skema Zod $\rightarrow$ Sanitasi Teks $\rightarrow$ Insert DB $\rightarrow$ Return Envelope `{ success: true, data }`.
-- [ ] **1.7 Security Middleware (`middleware.ts`)**:
+- [x] **1.7 Security Middleware (`middleware.ts`)**:
   - Terapkan Content Security Policy (CSP), HSTS, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, dan `Permissions-Policy`.
 
 ---
@@ -84,24 +84,24 @@ graph TD
 **Tujuan**: Menciptakan momen kemewahan pertama saat tamu membuka undangan dengan transisi amplop fisik-ke-digital dan audio fade-in yang santun.  
 **Acuan SSoT**: [`PRD.md`](./docs/DOKUMEN_TEKNIS/PRD.md) (Bagian 2.2-A & B), [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) (Bagian 4.1 & 5.1), [`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md)
 
-- [ ] **2.1 Struktur Amplop 3D Realistis (`src/components/opening/VirtualEnvelope.tsx`)**:
+- [x] **2.1 Struktur Amplop 3D Realistis (`src/components/opening/VirtualEnvelope.tsx`)**:
   - Kontainer 3D menggunakan CSS `perspective: 1200px` dan `transform-style: preserve-3d`.
   - Tekstur kertas amplop Kertas Batik (`#E8DCC8`) dengan bayangan realistis bertingkat.
   - Lipatan atas amplop (*top flap*) yang dapat berotasi naik $180^\circ$ pada sumbu X.
   - Kantong amplop (*pocket*) dengan z-index berlapis.
-- [ ] **2.2 Segel Lilin Monogram Interaktif (`src/components/opening/WaxSeal.tsx`)**:
+- [x] **2.2 Segel Lilin Monogram Interaktif (`src/components/opening/WaxSeal.tsx`)**:
   - Bentuk stempel lilin monogram inisial mempelai berpalet Cinde (`#8C2F27`) beraksen Prada Emas (`#C2A05B`).
   - Animasi sentuh: Efek retak mikro, pelepasan segel, dan pemicu rotasi lipatan amplop.
   - Label personalisasi: *"Kepada Bapak/Ibu/Saudara [Nama Tamu]"* dan tombol *"Buka undangan"*.
-- [ ] **2.3 Surat Undangan Meluncur (`src/components/opening/InvitationLetter.tsx`)**:
+- [x] **2.3 Surat Undangan Meluncur (`src/components/opening/InvitationLetter.tsx`)**:
   - Kertas surat Melati (`#FCFAF5`) dengan monogram tipis meluncur keluar dari kantong amplop ke arah atas.
   - Transisi mulus *fade-out* amplop untuk mengekspos halaman utama undangan.
-- [ ] **2.4 Audio Controller & Autoplay Policy Compliance (`src/components/audio/AudioController.tsx`)**:
+- [x] **2.4 Audio Controller & Autoplay Policy Compliance (`src/components/audio/AudioController.tsx`)**:
   - Mematuhi aturan browser: Audio dilarang autoplay saat inisialisasi awal.
   - Audio Context di-*unlock* murni melalui gestur klik segel lilin (*wax seal*).
   - Peningkatan volume linier Web Audio API (`linearRampToValueAtTime`) dari `0.0` ke `0.8` selama $2.5$ detik.
   - Auto-pause saat `document.visibilityState === 'hidden'` untuk hemat baterai dan data seluler.
-- [ ] **2.5 Floating Vinyl Player (`src/components/audio/FloatingVinyl.tsx`)**:
+- [x] **2.5 Floating Vinyl Player (`src/components/audio/FloatingVinyl.tsx`)**:
   - Tombol mengambang elegan di pojok layar berputar kontinu $360^\circ$ saat musik berputar.
   - Menggunakan CSS `animation-play-state: running | paused` (akselerasi GPU).
   - Tombol toggle play/mute dengan umpan balik visual yang halus.
@@ -112,32 +112,32 @@ graph TD
 **Tujuan**: Membangun halaman undangan bergaya majalah editorial mode (*high-fashion*) dengan ritme terang-gelap yang terstruktur.  
 **Acuan SSoT**: [`PRD.md`](./docs/DOKUMEN_TEKNIS/PRD.md) (Bagian 2.2-C s/d E), [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) (Bagian 2, 3, & 6)
 
-- [ ] **3.1 Halaman Utama & Integrasi Smooth Scroll (`src/app/page.tsx` & `Lenis`)**:
+- [x] **3.1 Halaman Utama & Integrasi Smooth Scroll (`src/app/page.tsx` & `Lenis`)**:
   - Konfigurasi `<ReactLenis root>` untuk scroll inersia ala situs luxury internasional.
   - Orkestrasi `page.tsx` sebagai Server Component dengan pembacaan asinkron `const { to } = await searchParams`.
-- [ ] **3.2 Cover Hero Editorial (`src/components/sections/HeroSection.tsx`)**:
+- [x] **3.2 Cover Hero Editorial (`src/components/sections/HeroSection.tsx`)**:
   - Tipografi Didone *Bodoni Moda* berukuran besar, judul formal, dan nama kedua mempelai.
   - Foto sinematik utama bergradasi hangat (temperature +6, saturation -8) menyatu dengan latar Gading Keraton (`#F6F1E7`).
-- [ ] **3.3 Ayat Suci Al-Qur'an & Doa Sakral (`src/components/sections/IslamicQuotes.tsx`)**:
+- [x] **3.3 Ayat Suci Al-Qur'an & Doa Sakral (`src/components/sections/IslamicQuotes.tsx`)**:
   - Teks kaligrafi Surat Ar-Rum ayat 21 presisi tinggi (font *Amiri* subset).
   - Terjemahan bahasa Indonesia yang puitis dan santun berfont *Jost*.
   - Doa sunnah pernikahan (*"Barakallahu laka..."*).
   - Animasi kemunculan bertingkat (*staggered reveal*) khusus pada seksi sakral ini.
-- [ ] **3.4 Profil Kedua Mempelai (`src/components/sections/CoupleProfile.tsx`)**:
+- [x] **3.4 Profil Kedua Mempelai (`src/components/sections/CoupleProfile.tsx`)**:
   - Kartu profil mempelai pria dan wanita berlatar Melati (`#FCFAF5`).
   - Frame foto berbentuk arch/ogee khas keraton (`border-radius: 50% 50% 4px 4px / 32% 32% 4px 4px`).
   - Nama lengkap, gelar, silsilah keluarga, dan tautan Instagram formal.
-- [ ] **3.5 Hitung Mundur Hari H (`src/components/sections/CountdownSection.tsx`)**:
+- [x] **3.5 Hitung Mundur Hari H (`src/components/sections/CountdownSection.tsx`)**:
   - Timer reaktif hitung mundur (Hari, Jam, Menit, Detik) dengan tipografi tabular *Bodoni Moda*.
   - Pemisah titik dua beranimasi denyut halus.
-- [ ] **3.6 Rangkaian Jadwal Acara & Lokasi Venue (`src/components/sections/EventDetails.tsx`)**:
+- [x] **3.6 Rangkaian Jadwal Acara & Lokasi Venue (`src/components/sections/EventDetails.tsx`)**:
   - Rincian sesi: Akad Nikah dan Resepsi Pernikahan (Waktu, Zona Waktu WIB, Alamat Lengkap Venue).
   - Tombol satu-klik *"Tambah ke kalender"* (*Google Calendar*, *Apple Calendar*, file `.ics`).
   - Tombol navigasi langsung membuka Google Maps & Waze menuju titik koordinat venue.
-- [ ] **3.7 Linimasa Kisah Cinta (`src/components/sections/LoveStoryTimeline.tsx`)**:
+- [x] **3.7 Linimasa Kisah Cinta (`src/components/sections/LoveStoryTimeline.tsx`)**:
   - Garis waktu vertikal terikat scroll (*scroll-linked progress line*) menggunakan Motion `useScroll` dan `useTransform`.
   - Momen penting pertemuan dan perjalanan cinta dengan aksen Prada Emas tipis.
-- [ ] **3.8 Galeri Foto Sinematik & Lightbox Gesture (`src/components/sections/GalleryMasonry.tsx`)**:
+- [x] **3.8 Galeri Foto Sinematik & Lightbox Gesture (`src/components/sections/GalleryMasonry.tsx`)**:
   - Latar seksi berganti ke Malam Wulung (`#15120F`) untuk memberikan kontras dramatis sinematik.
   - Grid masonry responsif dengan rasio foto editorial (3:4 dan 16:9).
   - Modal Lightbox interaktif dengan dukungan *swipe left/right* dan *pinch-to-zoom* pada layar sentuh ponsel.

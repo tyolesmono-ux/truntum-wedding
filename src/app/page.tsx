@@ -9,10 +9,6 @@ export default function HomePage() {
       <KawungBackground />
 
       <div className="relative z-10 max-w-xl mx-auto space-y-6">
-        <span className="text-xs tracking-wide text-surakarta-brand font-body font-medium">
-          Surakarta Royal Heritage
-        </span>
-
         <h1 className="text-4xl md:text-5xl font-display text-surakarta-fg leading-tight">
           Bespoke Luxury Digital Wedding Invitation
         </h1>

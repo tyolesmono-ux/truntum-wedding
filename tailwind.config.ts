@@ -19,6 +19,7 @@ const config: Config = {
           'fg-body': 'var(--fg-body)',
           'fg-muted': 'var(--fg-muted)',
           'fg-on-dark': 'var(--fg-on-dark)',
+          'fg-muted-dark': 'var(--fg-muted-dark)',
           brand: 'var(--brand)',
           'brand-soft': 'var(--brand-soft)',
           gold: 'var(--gold)',
@@ -27,6 +28,7 @@ const config: Config = {
           success: 'var(--success)',
           line: 'var(--line)',
           'line-strong': 'var(--line-strong)',
+          'line-dark': 'var(--line-dark)',
         },
       },
       fontFamily: {
@@ -35,10 +37,11 @@ const config: Config = {
         arabic: ['var(--font-amiri)', 'serif'],
       },
       borderRadius: {
-        sm: '2px',
-        DEFAULT: '4px',
-        md: '4px',
-        lg: '6px',
+        DEFAULT: '2px',
+        card: '4px',
+      },
+      transitionTimingFunction: {
+        luxe: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

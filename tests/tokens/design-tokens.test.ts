@@ -21,6 +21,7 @@ describe('Design Tokens & Surakarta Palette Integrity', () => {
     expect(cssContent).toContain('--fg-body: #4A3E33;');
     expect(cssContent).toContain('--fg-muted: #8A7862;');
     expect(cssContent).toContain('--fg-on-dark: #EFE6D6;');
+    expect(cssContent).toContain('--fg-muted-dark: #A2937C;');
 
     // Cek brand & accents tokens
     expect(cssContent).toContain('--brand: #6B4423;');
@@ -33,6 +34,7 @@ describe('Design Tokens & Surakarta Palette Integrity', () => {
     // Cek divider tokens
     expect(cssContent).toContain('--line: #E0D3BC;');
     expect(cssContent).toContain('--line-strong: #C9B896;');
+    expect(cssContent).toContain('--line-dark: rgba(217, 190, 133, 0.22);');
   });
 
   it('maps CSS variables in tailwind.config.ts correctly', () => {
@@ -47,5 +49,7 @@ describe('Design Tokens & Surakarta Palette Integrity', () => {
     expect(configContent).toContain("var(--bg)");
     expect(configContent).toContain("var(--gold)");
     expect(configContent).toContain("var(--brand)");
+    expect(configContent).toContain("card: '4px'");
+    expect(configContent).toContain("luxe: 'cubic-bezier(0.22, 1, 0.36, 1)'");
   });
 });

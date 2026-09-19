@@ -7,7 +7,7 @@ export const bodoniModa = Bodoni_Moda({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-bodoni',
-  weight: ['400', '600', '700'],
+  weight: '400',
   style: ['normal', 'italic'],
 });
 
@@ -18,7 +18,7 @@ export const jost = Jost({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-jost',
-  weight: ['300', '400', '500', '600'],
+  weight: ['300', '400', '500'],
 });
 
 /**
@@ -28,5 +28,5 @@ export const amiri = Amiri({
   subsets: ['arabic'],
   display: 'swap',
   variable: '--font-amiri',
-  weight: ['400', '700'],
+  weight: '400',
 });

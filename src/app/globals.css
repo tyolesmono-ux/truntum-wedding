@@ -15,6 +15,7 @@
   --fg-body: #4A3E33;     /* Teks Body Halus */
   --fg-muted: #8A7862;    /* Teks Muted */
   --fg-on-dark: #EFE6D6;  /* Teks Gading di Latar Gelap */
+  --fg-muted-dark: #A2937C;/* Teks Muted di Latar Gelap */
 
   /* Brand & Accents */
   --brand: #6B4423;       /* Sogan Tua / Brand, Tombol Utama */
@@ -27,6 +28,7 @@
   /* Dividers & Borders */
   --line: #E0D3BC;        /* Border Lembut */
   --line-strong: #C9B896; /* Border Tegas & Garis Truntum */
+  --line-dark: rgba(217, 190, 133, 0.22); /* Border Lembut di Latar Gelap */
 }
 
 @layer base {

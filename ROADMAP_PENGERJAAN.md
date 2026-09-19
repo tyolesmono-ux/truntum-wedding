@@ -29,24 +29,24 @@ graph TD
 **Tujuan**: Menyiapkan perancah kode (*scaffolding*) Next.js 15, konfigurasi TypeScript ketat, instalasi pustaka resmi terverifikasi, dan tokenisasi desain sistem Surakarta.  
 **Acuan SSoT**: [`TECH_STACK.md`](./docs/DOKUMEN_TEKNIS/TECH_STACK.md), [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md), [`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md)
 
-- [ ] **0.1 Inisialisasi Proyek Next.js 15**:
+- [x] **0.1 Inisialisasi Proyek Next.js 15**:
   - Inisialisasi basis kode dengan Next.js App Router (`^15.1.0`), React 19 stabil (`^19.0.0`), dan TypeScript (`^5.6.0`).
   - Konfigurasi `tsconfig.json` dengan mode ketat (`strict: true`, `noImplicitAny: true`, `strictNullChecks: true`).
-- [ ] **0.2 Instalasi Dependensi Terverifikasi**:
+- [x] **0.2 Instalasi Dependensi Terverifikasi**:
   - Pustaka UI & Animasi: `motion` (`motion/react`), `lenis` (`lenis/react`), `canvas-confetti`, `clsx`, `tailwind-merge`, `lucide-react`.
   - Pustaka Backend & Validasi: `@supabase/supabase-js`, `@supabase/ssr`, `zod`, `isomorphic-dompurify`.
   - Type definitions: `@types/node`, `@types/react`, `@types/react-dom`, `@types/canvas-confetti`.
-- [ ] **0.3 Konfigurasi Tipografi Google Fonts (`next/font/google`)**:
+- [x] **0.3 Konfigurasi Tipografi Google Fonts (`next/font/google`)**:
   - *Bodoni Moda* (Display & Headings $\ge 22\text{px}$).
   - *Jost* (Body, UI, tombol, dan data tabular).
   - *Amiri* (Khusus kaligrafi Arab Al-Qur'an dengan *subsetting* presisi agar ukuran $\le 30\text{ KB}$).
-- [ ] **0.4 Konfigurasi Tailwind CSS & CSS Variables Surakarta**:
+- [x] **0.4 Konfigurasi Tailwind CSS & CSS Variables Surakarta**:
   - Daftarkan palet warna resmi di `globals.css`:
     - Surfaces: Gading Keraton (`#F6F1E7`), Melati (`#FCFAF5`), Kertas Batik (`#E8DCC8`), Malam Wulung (`#15120F`), Permukaan Malam (`#221D18`).
     - Typography: Wulung (`#231F1B`), Teks Body (`#4A3E33`), Muted (`#8A7862`), Teks Gading Gelap (`#EFE6D6`).
     - Brand & Accents: Sogan Tua (`#6B4423`), Sogan Muda (`#B07D4A`), Prada Emas (`#C2A05B`), Prada Terang (`#D9BE85`), Cinde (`#8C2F27`), Gadung Mlati (`#7E8C74`).
   - Definisikan utility `cn()` (`clsx` + `tailwind-merge`) di `src/lib/utils.ts`.
-- [ ] **0.5 Template Aset Visual & Ornamen**:
+- [x] **0.5 Template Aset Visual & Ornamen**:
   - Siapkan komponen vektor SVG motif Jawa: Tekstur Kawung halus (opasitas 5%) dan pemisah Truntum.
 
 ---

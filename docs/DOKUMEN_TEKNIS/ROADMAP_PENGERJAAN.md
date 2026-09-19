@@ -112,32 +112,32 @@ graph TD
 **Tujuan**: Membangun halaman undangan bergaya majalah editorial mode (*high-fashion*) dengan ritme terang-gelap yang terstruktur.  
 **Acuan SSoT**: [`PRD.md`](./docs/DOKUMEN_TEKNIS/PRD.md) (Bagian 2.2-C s/d E), [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) (Bagian 2, 3, & 6)
 
-- [ ] **3.1 Halaman Utama & Integrasi Smooth Scroll (`src/app/page.tsx` & `Lenis`)**:
+- [x] **3.1 Halaman Utama & Integrasi Smooth Scroll (`src/app/page.tsx` & `Lenis`)**:
   - Konfigurasi `<ReactLenis root>` untuk scroll inersia ala situs luxury internasional.
   - Orkestrasi `page.tsx` sebagai Server Component dengan pembacaan asinkron `const { to } = await searchParams`.
-- [ ] **3.2 Cover Hero Editorial (`src/components/sections/HeroSection.tsx`)**:
+- [x] **3.2 Cover Hero Editorial (`src/components/sections/HeroSection.tsx`)**:
   - Tipografi Didone *Bodoni Moda* berukuran besar, judul formal, dan nama kedua mempelai.
   - Foto sinematik utama bergradasi hangat (temperature +6, saturation -8) menyatu dengan latar Gading Keraton (`#F6F1E7`).
-- [ ] **3.3 Ayat Suci Al-Qur'an & Doa Sakral (`src/components/sections/IslamicQuotes.tsx`)**:
+- [x] **3.3 Ayat Suci Al-Qur'an & Doa Sakral (`src/components/sections/IslamicQuotes.tsx`)**:
   - Teks kaligrafi Surat Ar-Rum ayat 21 presisi tinggi (font *Amiri* subset).
   - Terjemahan bahasa Indonesia yang puitis dan santun berfont *Jost*.
   - Doa sunnah pernikahan (*"Barakallahu laka..."*).
   - Animasi kemunculan bertingkat (*staggered reveal*) khusus pada seksi sakral ini.
-- [ ] **3.4 Profil Kedua Mempelai (`src/components/sections/CoupleProfile.tsx`)**:
+- [x] **3.4 Profil Kedua Mempelai (`src/components/sections/CoupleProfile.tsx`)**:
   - Kartu profil mempelai pria dan wanita berlatar Melati (`#FCFAF5`).
   - Frame foto berbentuk arch/ogee khas keraton (`border-radius: 50% 50% 4px 4px / 32% 32% 4px 4px`).
   - Nama lengkap, gelar, silsilah keluarga, dan tautan Instagram formal.
-- [ ] **3.5 Hitung Mundur Hari H (`src/components/sections/CountdownSection.tsx`)**:
+- [x] **3.5 Hitung Mundur Hari H (`src/components/sections/CountdownSection.tsx`)**:
   - Timer reaktif hitung mundur (Hari, Jam, Menit, Detik) dengan tipografi tabular *Bodoni Moda*.
   - Pemisah titik dua beranimasi denyut halus.
-- [ ] **3.6 Rangkaian Jadwal Acara & Lokasi Venue (`src/components/sections/EventDetails.tsx`)**:
+- [x] **3.6 Rangkaian Jadwal Acara & Lokasi Venue (`src/components/sections/EventDetails.tsx`)**:
   - Rincian sesi: Akad Nikah dan Resepsi Pernikahan (Waktu, Zona Waktu WIB, Alamat Lengkap Venue).
   - Tombol satu-klik *"Tambah ke kalender"* (*Google Calendar*, *Apple Calendar*, file `.ics`).
   - Tombol navigasi langsung membuka Google Maps & Waze menuju titik koordinat venue.
-- [ ] **3.7 Linimasa Kisah Cinta (`src/components/sections/LoveStoryTimeline.tsx`)**:
+- [x] **3.7 Linimasa Kisah Cinta (`src/components/sections/LoveStoryTimeline.tsx`)**:
   - Garis waktu vertikal terikat scroll (*scroll-linked progress line*) menggunakan Motion `useScroll` dan `useTransform`.
   - Momen penting pertemuan dan perjalanan cinta dengan aksen Prada Emas tipis.
-- [ ] **3.8 Galeri Foto Sinematik & Lightbox Gesture (`src/components/sections/GalleryMasonry.tsx`)**:
+- [x] **3.8 Galeri Foto Sinematik & Lightbox Gesture (`src/components/sections/GalleryMasonry.tsx`)**:
   - Latar seksi berganti ke Malam Wulung (`#15120F`) untuk memberikan kontras dramatis sinematik.
   - Grid masonry responsif dengan rasio foto editorial (3:4 dan 16:9).
   - Modal Lightbox interaktif dengan dukungan *swipe left/right* dan *pinch-to-zoom* pada layar sentuh ponsel.

@@ -16,7 +16,6 @@ export interface VirtualEnvelopeProps {
 export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
   const shouldReduceMotion = usePrefersReducedMotion();
 
   // Audio engine context integration (graceful if outside provider)
@@ -35,9 +34,8 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
 
   // Master sequence orchestrator
   const handleOpen = useCallback(() => {
-    if (hasInteracted || isOpening || isOpened) return;
+    if (isOpening || isOpened) return;
 
-    setHasInteracted(true);
     setIsOpening(true);
 
     // Physical user gesture unlocks audio engine
@@ -47,16 +45,13 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
 
     // Motion sequence (200ms quick fade if prefers-reduced-motion, otherwise 1300ms 3D sequence)
     const duration = shouldReduceMotion ? 200 : 1300;
-    const completeTimer = setTimeout(() => {
+    setTimeout(() => {
       setIsOpened(true);
-      document.body.style.overflow = '';
       if (onOpened) {
         onOpened();
       }
     }, duration);
-
-    return () => clearTimeout(completeTimer);
-  }, [hasInteracted, isOpening, isOpened, audioContext, onOpened, shouldReduceMotion]);
+  }, [isOpening, isOpened, audioContext, onOpened, shouldReduceMotion]);
 
   return (
     <AnimatePresence>

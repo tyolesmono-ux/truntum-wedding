@@ -4,10 +4,12 @@ import React from 'react';
 import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAudio } from '@/contexts/AudioContext';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { FloatingVinylProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
 
 export function FloatingVinyl({ className }: FloatingVinylProps) {
   const { isPlaying, togglePlay } = useAudio();
+  const shouldReduceMotion = usePrefersReducedMotion();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -25,6 +27,7 @@ export function FloatingVinyl({ className }: FloatingVinylProps) {
       aria-label={isPlaying ? 'Jeda musik' : 'Putar musik'}
       aria-pressed={isPlaying}
       data-playing={isPlaying ? 'true' : 'false'}
+      data-reduced-motion={shouldReduceMotion ? 'true' : 'false'}
       data-testid="floating-vinyl-player"
       className={cn(
         'fixed bottom-5 right-5 z-40',
@@ -32,7 +35,7 @@ export function FloatingVinyl({ className }: FloatingVinylProps) {
         'bg-[#231F1B] border border-[#D9BE85]/35',
         'shadow-[0_4px_16px_rgba(0,0,0,0.35)]',
         'flex items-center justify-center',
-        'focus-visible:ring-2 focus-visible:ring-[#C2A05B] focus-visible:ring-offset-4 focus:outline-none',
+        'focus-visible:ring-2 focus-visible:ring-surakarta-gold focus-visible:ring-offset-4 focus:outline-none',
         'hover:scale-105 active:scale-95 transition-transform duration-150',
         className
       )}
@@ -41,10 +44,10 @@ export function FloatingVinyl({ className }: FloatingVinylProps) {
       <div
         className={cn(
           'relative w-full h-full rounded-full overflow-hidden flex items-center justify-center',
-          'motion-safe:animate-[spin_12s_linear_infinite]'
+          !shouldReduceMotion && 'motion-safe:animate-[spin_12s_linear_infinite]'
         )}
         style={{
-          animationPlayState: isPlaying ? 'running' : 'paused',
+          animationPlayState: !shouldReduceMotion && isPlaying ? 'running' : 'paused',
         }}
       >
         {/* Grooves: 3 Concentric Engraved Rings */}
@@ -60,7 +63,13 @@ export function FloatingVinyl({ className }: FloatingVinylProps) {
       </div>
 
       {/* Reduced Motion Indicator (Visible when motion is reduced) */}
-      <div className="hidden motion-reduce:flex absolute inset-0 items-center justify-center pointer-events-none text-[#D9BE85]">
+      <div
+        data-testid="reduced-motion-indicator"
+        className={cn(
+          'absolute inset-0 items-center justify-center pointer-events-none text-[#D9BE85]',
+          shouldReduceMotion ? 'flex' : 'hidden motion-reduce:flex'
+        )}
+      >
         {isPlaying ? (
           <Pause className="w-4 h-4 fill-current" />
         ) : (

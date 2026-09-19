@@ -81,4 +81,22 @@ describe('FloatingVinyl Player Component (SSoT DESIGN.md Section 6.2)', () => {
     await user.keyboard(' ');
     expect(screen.getByRole('button', { name: 'Putar musik' })).toBeDefined();
   });
+
+  it('respects prefers-reduced-motion by disabling continuous rotation and displaying static indicator', () => {
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes('prefers-reduced-motion'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+
+    renderVinyl();
+    const vinylBtn = screen.getByRole('button', { name: 'Putar musik' });
+    expect(vinylBtn.getAttribute('data-reduced-motion')).toBe('true');
+    expect(screen.getByTestId('reduced-motion-indicator')).toBeInTheDocument();
+  });
 });

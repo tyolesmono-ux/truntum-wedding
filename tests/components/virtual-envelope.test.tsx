@@ -109,6 +109,72 @@ describe('VirtualEnvelope Component (SSoT DESIGN.md Section 6.1 & Motion)', () =
     expect(gain?.gain.linearRampToValueAtTime).toHaveBeenCalledWith(0.8, expect.any(Number));
     vi.useRealTimers();
   });
+
+  describe('Accessibility & Reduced Motion (SSoT DESIGN.md Section 7 & WCAG AA)', () => {
+    it('supports keyboard activation via Enter key on WaxSeal', async () => {
+      vi.useFakeTimers();
+      const handleOpened = vi.fn();
+      renderEnvelope({ onOpened: handleOpened });
+
+      const sealBtn = screen.getByTestId('envelope-wax-seal');
+      sealBtn.focus();
+      expect(document.activeElement).toBe(sealBtn);
+
+      await act(async () => {
+        sealBtn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        vi.advanceTimersByTime(2000);
+      });
+
+      expect(handleOpened).toHaveBeenCalled();
+      vi.useRealTimers();
+    });
+
+    it('supports keyboard activation via Space key on CTA button', async () => {
+      vi.useFakeTimers();
+      const handleOpened = vi.fn();
+      renderEnvelope({ onOpened: handleOpened });
+
+      const ctaBtn = screen.getByTestId('envelope-cta-button');
+      ctaBtn.focus();
+      expect(document.activeElement).toBe(ctaBtn);
+
+      await act(async () => {
+        ctaBtn.click();
+        vi.advanceTimersByTime(2000);
+      });
+
+      expect(handleOpened).toHaveBeenCalled();
+      vi.useRealTimers();
+    });
+
+    it('simplifies opening sequence to 200ms when prefers-reduced-motion is active', async () => {
+      vi.useFakeTimers();
+      // Mock prefers-reduced-motion: reduce
+      window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+        matches: query.includes('prefers-reduced-motion'),
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      }));
+
+      const handleOpened = vi.fn();
+      renderEnvelope({ onOpened: handleOpened });
+
+      const ctaBtn = screen.getByTestId('envelope-cta-button');
+
+      await act(async () => {
+        ctaBtn.click();
+        vi.advanceTimersByTime(250);
+      });
+
+      expect(handleOpened).toHaveBeenCalled();
+      vi.useRealTimers();
+    });
+  });
 });
 
 

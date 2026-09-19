@@ -6,12 +6,14 @@ import { cn } from '@/lib/utils';
 import { WaxSeal } from './WaxSeal';
 import { InvitationLetter } from './InvitationLetter';
 import { useOptionalAudio } from '@/contexts/AudioContext';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { VirtualEnvelopeProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
 
 export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
   const [isOpened, setIsOpened] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const shouldReduceMotion = usePrefersReducedMotion();
 
   // Audio engine context integration (graceful if outside provider)
   const audioContext = useOptionalAudio();
@@ -44,21 +46,18 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
       void audioContext.unlockAndPlay();
     }
 
-    // Motion sequence:
-    // 0-180ms: Wax seal cracks
-    // 180ms-880ms: Flap flips 180deg
-    // 280ms-900ms: Letter slides upward
-    // 760ms-1260ms: Fade-out overlay
+    // Motion sequence (200ms quick fade if prefers-reduced-motion, otherwise 1300ms 3D sequence)
+    const duration = shouldReduceMotion ? 200 : 1300;
     const completeTimer = setTimeout(() => {
       setIsOpened(true);
       document.body.style.overflow = '';
       if (onOpened) {
         onOpened();
       }
-    }, 1300);
+    }, duration);
 
     return () => clearTimeout(completeTimer);
-  }, [hasInteracted, isOpening, isOpened, audioContext, onOpened]);
+  }, [hasInteracted, isOpening, isOpened, audioContext, onOpened, shouldReduceMotion]);
 
   return (
     <AnimatePresence>
@@ -66,7 +65,10 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
         <motion.div
           key="virtual-envelope-overlay"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.5, ease: 'easeInOut' } }}
+          exit={{
+            opacity: 0,
+            transition: { duration: shouldReduceMotion ? 0.2 : 0.5, ease: 'easeInOut' },
+          }}
           className="fixed inset-0 z-50 flex flex-col items-center justify-between py-10 px-4 select-none overflow-hidden"
           style={{
             background: 'radial-gradient(circle at center, #221D18 0%, #15120F 100%)',
@@ -137,13 +139,14 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
                 animate={
                   isOpening
                     ? {
-                        rotateX: -180,
+                        rotateX: shouldReduceMotion ? 0 : -180,
+                        opacity: shouldReduceMotion ? 0.4 : 1,
                         transition: {
-                          duration: 0.7,
+                          duration: shouldReduceMotion ? 0.2 : 0.7,
                           ease: [0.22, 1, 0.36, 1],
                         },
                       }
-                    : { rotateX: 0 }
+                    : { rotateX: 0, opacity: 1 }
                 }
                 style={{
                   transformOrigin: 'top center',
@@ -180,7 +183,7 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
                 'w-full h-12 px-6 rounded-[2px] font-body text-[15px] font-medium tracking-wide',
                 'bg-[#6B4423] text-[#FCFAF5] shadow-[0_4px_16px_rgba(0,0,0,0.3)]',
                 'hover:bg-[#5A381C] active:scale-[0.98] transition-all duration-150',
-                'focus-visible:ring-2 focus-visible:ring-[#C2A05B] focus-visible:ring-offset-4 focus:outline-none',
+                'focus-visible:ring-2 focus-visible:ring-surakarta-gold focus-visible:ring-offset-4 focus:outline-none',
                 'disabled:opacity-50 disabled:cursor-not-allowed'
               )}
             >

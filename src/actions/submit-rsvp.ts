@@ -57,19 +57,10 @@ export async function submitRSVP(input: RSVPInput): Promise<ActionResponse<RSVPR
   // 4. Validasi Skema Zod
   const validationResult = rsvpSchema.safeParse(input);
   if (!validationResult.success) {
-    const details: Record<string, string[]> = {};
-    validationResult.error.errors.forEach((err) => {
-      const field = err.path.join('.');
-      if (!details[field]) {
-        details[field] = [];
-      }
-      details[field].push(err.message);
-    });
-
     return {
       success: false,
       error: 'VALIDATION_ERROR',
-      details,
+      details: validationResult.error.flatten().fieldErrors,
     };
   }
 
@@ -120,14 +111,7 @@ export async function submitRSVP(input: RSVPInput): Promise<ActionResponse<RSVPR
 
     return {
       success: true,
-      data: {
-        id: data.id,
-        guest_name: data.guest_name,
-        attendance_status: data.attendance_status,
-        pax_count: data.pax_count,
-        message: data.message,
-        created_at: data.created_at,
-      },
+      data: data as RSVPRecordOutput,
     };
   } catch {
     return {

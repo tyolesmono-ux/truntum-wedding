@@ -23,17 +23,15 @@ export async function checkRateLimit(
   dbFallbackCheck?: (ipHash: string) => Promise<number>
 ): Promise<RateLimitStatus> {
   const now = Date.now();
-  const existing = rateLimitStore.get(ipHash);
+  let existing = rateLimitStore.get(ipHash);
 
   // 1. Cek Record In-Memory
   if (existing) {
     if (existing.expiresAt <= now) {
       rateLimitStore.delete(ipHash);
+      existing = undefined;
     } else if (existing.count >= MAX_SUBMISSIONS) {
-      return {
-        isAllowed: false,
-        remaining: 0,
-      };
+      return { isAllowed: false, remaining: 0 };
     }
   }
 
@@ -42,10 +40,7 @@ export async function checkRateLimit(
     try {
       const dbRecentCount = await dbFallbackCheck(ipHash);
       if (dbRecentCount >= MAX_SUBMISSIONS) {
-        return {
-          isAllowed: false,
-          remaining: 0,
-        };
+        return { isAllowed: false, remaining: 0 };
       }
     } catch {
       // Jika terjadi error pada fallback DB, tetap prioritaskan perlindungan in-memory
@@ -53,8 +48,7 @@ export async function checkRateLimit(
   }
 
   // 3. Catat dan Tambah Counter
-  const currentRecord = rateLimitStore.get(ipHash);
-  if (!currentRecord || currentRecord.expiresAt <= now) {
+  if (!existing) {
     rateLimitStore.set(ipHash, {
       count: 1,
       expiresAt: now + WINDOW_MS,
@@ -65,12 +59,10 @@ export async function checkRateLimit(
     };
   }
 
-  currentRecord.count += 1;
-  const remaining = Math.max(0, MAX_SUBMISSIONS - currentRecord.count);
-
+  existing.count += 1;
   return {
     isAllowed: true,
-    remaining,
+    remaining: Math.max(0, MAX_SUBMISSIONS - existing.count),
   };
 }
 

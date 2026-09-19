@@ -35,7 +35,7 @@ export type RSVPInput = z.infer<typeof rsvpSchema>;
 
 export type ActionResponse<T = unknown> =
   | { success: true; data: T }
-  | { success: false; error: string; details?: Record<string, string[]> };
+  | { success: false; error: string; details?: Record<string, string[] | undefined> };
 
 export interface RSVPRecordOutput {
   id: string;

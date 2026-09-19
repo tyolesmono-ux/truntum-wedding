@@ -91,6 +91,10 @@ All technical decisions MUST defer to the following hierarchy of authority:
 - Initial JavaScript bundle MUST NOT exceed 90 KB gzipped. Components below the fold (Gallery, Gift, RSVP) MUST use dynamic imports (`next/dynamic`).
 - Only GPU-composited properties (`transform: translate3d/rotate3d`, `opacity`) may be animated. Animating layout properties (`top`, `left`, `margin`, `width`) is forbidden, with the singular exception of guestbook realtime entry insertion (`height: 0 → auto`, 240ms).
 
+### 3.6 Mandatory Context7 Documentation Verification in Planning Phases
+- In **EVERY** design, planning, interview, or specification phase (`/grill-me`, `/brainstorming`, `/writing-plans`, `/speckit-plan`), agents **MUST** call `context7` (`resolve-library-id` followed by `query-docs`) to verify official API signatures, version breaking changes, and implementation best practices for all third-party libraries and frameworks (Next.js 15, React 19, `motion/react`, Lenis, Supabase, Cloudflare Turnstile, Tailwind CSS).
+- Agents are **STRICTLY FORBIDDEN** from hallucinating or relying on stale pre-2024 LLM training memory for modern library APIs.
+
 ---
 
 ## 4. Design System & Anti-Slop Guidelines (SSoT: `DESIGN.md`)
@@ -116,12 +120,38 @@ When writing, editing, or generating UI components:
 
 ## 5. Engineering Standards & Quality Gates
 
-1. **TypeScript**: Strict mode enabled. Absolute ban on `any` and loose casting. Use Zod schemas for all external or runtime inputs.
-2. **Next.js 15**: React Server Components (RSC) by default. Use `'use client'` only on interactive leaf components.
-3. **Pre-Completion Quality Checks**:
-   Every agent MUST run and verify the following commands before completing any implementation task:
-   ```bash
-   pnpm typecheck   # Must exit with 0 errors
-   pnpm lint        # Must exit with 0 warnings/errors
-   ```
-4. **Git Commits**: Follow Conventional Commits (`feat:`, `fix:`, `docs:`, `perf:`, `refactor:`, `style:`, `test:`, `chore:`).
+### 5.1 The 5-Phase Engineering Loop
+Every agent MUST execute tasks following the strict 5-Phase Engineering Loop defined in [`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md#8-loop-engineering-siklus-rekayasa-5-fase):
+1. **Phase 1: Context & Discovery**: Explore knowledge graph via `codebase-memory-mcp` + MANDATORY `context7` docs verification for relevant libraries.
+2. **Phase 2: Planning & Restraint**: Formulate minimal plan under `/ponytail full` (YAGNI, stdlib over custom code, zero bloat). STOP and wait for explicit user approval before writing code.
+3. **Phase 3: Test-First Unit Testing**: Write automated unit tests (`*.test.ts`/`*.test.tsx`) before feature implementation. Verify tests fail (Red).
+4. **Phase 4: Minimal Implementation**: Implement the minimum clean code required to pass all tests (Green). Strictly enforce SSoT [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) and `antislop`. Refactor cleanly.
+5. **Phase 5: DoD & Quality Gates**: Execute automated verifications (`pnpm test`, `pnpm typecheck`, `pnpm lint`) and satisfy the Definition of Done.
+
+### 5.2 Mandatory Unit Testing per Feature
+- Every new feature, security utility, validation schema, audio controller, UI interactive component, or Server Action **MUST** have co-located unit tests (`*.test.ts` or `*.test.tsx` using Vitest + React Testing Library).
+- Unit tests MUST explicitly cover:
+  - Happy paths & standard user journeys.
+  - Edge cases, boundaries, and validation limits (e.g. name length 2–60, message length 3–500, pax 1–5).
+  - Security & threat rejection (DOMPurify stripping HTML/SVG/XSS, regex blocking any phishing URLs, CSRF/Turnstile rejections).
+  - Autoplay compliance & audio state machines (no autoplay on load, physical gesture unlock, linear volume ramp).
+
+### 5.3 Definition of Done (DoD)
+No task or feature may be marked complete without satisfying all 6 pillars of the Definition of Done ([`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md#10-definition-of-done-dod)):
+1. **Design SSoT Compliance**: Exact Surakarta palette tokens, 3 fonts, sentence case, 2px/4px border radii, no anti-patterns.
+2. **Zero-Trust Security**: Bank/QRIS data immutable in server config (`wedding-data.ts`), pure white QRIS modal (`#FFFFFF`), zero XSS, no phishing URLs, Turnstile + rate limiting active.
+3. **Audio & 60 FPS**: No autoplay on load, gesture unlock, linear fade-in ramp, GPU-accelerated motion only, JS bundle $\le 90\text{ KB}$ gzipped.
+4. **Unit Tests Passing**: 100% pass rate on all automated tests (`pnpm test`).
+5. **Static Verification**: `pnpm typecheck` exits with 0 errors; `pnpm lint` exits with 0 errors and 0 warnings.
+6. **Documentation & Commits**: Architectural changes documented; Conventional Commits format applied.
+
+### 5.4 Pre-Completion Quality Checks
+Before concluding any implementation task or claiming completion, agents MUST execute and verify:
+```bash
+pnpm test        # All unit tests MUST pass (100% pass rate)
+pnpm typecheck   # TypeScript compiler MUST exit with 0 errors
+pnpm lint        # ESLint MUST exit with 0 warnings/errors
+```
+
+### 5.5 Conventional Commits
+All git commits MUST strictly adhere to Conventional Commits: `<type>(<scope>): <short imperative description>`. Types: `feat`, `fix`, `test`, `docs`, `style`, `refactor`, `perf`, `chore`.

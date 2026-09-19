@@ -1,19 +1,19 @@
 <!--
 # Sync Impact Report
-- Version change: 0.0.0 (Unratified Scaffold) → 1.0.0 (Initial Ratification)
-- List of modified principles:
-  - [PRINCIPLE_1_NAME] → I. Single Source of Truth (SSoT) Design & Editorial Aesthetics (NON-NEGOTIABLE)
-  - [PRINCIPLE_2_NAME] → II. Zero-Trust Financial Security & Anti-Tampering (NON-NEGOTIABLE)
-  - [PRINCIPLE_3_NAME] → III. Defense-in-Depth Input Sanitization & Anti-Abuse (NON-NEGOTIABLE)
-  - [PRINCIPLE_4_NAME] → IV. Mobile-First 60 FPS Performance & Autoplay Compliance (NON-NEGOTIABLE)
-  - [PRINCIPLE_5_NAME] → V. Server Components by Default & Strict TypeScript Safety (NON-NEGOTIABLE)
+- Version change: 1.0.0 → 1.1.0 (MINOR: Testing Gates, Context7 Planning Mandate, Engineering Loop & Definition of Done)
+- List of modified principles & governance:
+  - Development Workflow & Quality Gates:
+    - Ratified the 5-Phase Engineering Loop (Context/Discovery, Planning/Restraint, Test-First, Minimal Implementation, DoD Verification).
+    - Mandated Context7 documentation verification in all planning & specification phases (/grill-me, /brainstorming, /writing-plans, /speckit-plan).
+    - Enforced mandatory automated unit testing per feature (Vitest + RTL, covering security, validations, audio state, and server actions).
+    - Enforced 6-pillar Definition of Done (DoD) compliance before declaring completion.
 - Added sections:
-  - Security, Infrastructure & Performance Standards
-  - Development Workflow, Quality Gates & Release Protocol
+  - Loop Engineering & Quality Gates Workflow
+  - Definition of Done (DoD) Invariants
 - Removed sections:
-  - None (scaffold placeholders replaced with concrete project governance)
+  - None
 - Follow-up TODOs:
-  - None. All placeholders fully resolved and derived from PRD.md, DESIGN.md, and system specifications.
+  - None. All requirements derived from PRD, DESIGN.md, CODING_STANDARD.md, and system specifications.
 -->
 
 # Bespoke Luxury Digital Wedding Invitation Constitution
@@ -79,22 +79,51 @@ If an automated bot attack or denial-of-service event bypasses Cloudflare Turnst
 
 ## Development Workflow, Quality Gates & Release Protocol
 
-### 1. Pre-Commit Quality Gates
-Every contribution, feature branch, or automated agent PR MUST pass all quality checks prior to approval:
-1. **Type Safety**: `pnpm typecheck` (`tsc --noEmit`) passes with 0 errors.
-2. **Code Quality**: `pnpm lint` passes with 0 errors and 0 unused variable warnings.
-3. **Design Compliance**: UI components match tokens and rules in `docs/DOKUMEN_TEKNIS/DESIGN.md` (correct typography, sentence case, no tracked uppercase, radius 2px for buttons, radius 4px for cards).
-4. **Security Audit**: No credentials (`SUPABASE_SERVICE_ROLE_KEY`, `TURNSTILE_SECRET_KEY`) exposed to client bundles or tracked in git; zero instances of `dangerouslySetInnerHTML`.
-5. **Autoplay Compliance**: Audio components never attempt to execute `.play()` or `.resume()` outside an explicit user gesture.
+### 1. The 5-Phase Engineering Loop
+All engineering tasks (feature implementation, bug fixes, refactoring) MUST strictly execute via the 5-Phase Engineering Loop:
+1. **Phase 1: Context & Discovery**:
+   - Query codebase knowledge graph via `codebase-memory-mcp`.
+   - **MANDATORY CONTEXT7**: During any planning, interview, or specification phase (`/grill-me`, `/brainstorming`, `/writing-plans`, `/speckit-plan`), engineers and agents MUST query `context7` (`resolve-library-id` followed by `query-docs`) to verify official API syntax, breaking changes, and configuration best practices. Never rely on stale LLM training data for framework APIs.
+2. **Phase 2: Planning & Restraint (`/ponytail full`)**:
+   - Enforce extreme minimalism (YAGNI, stdlib/native features over dependencies, zero bloat).
+   - Produce a formal implementation plan and STOP for explicit user approval before touching code.
+3. **Phase 3: Test-First Unit Testing**:
+   - Write automated unit tests (`*.test.ts` / `*.test.tsx` via Vitest and React Testing Library) BEFORE writing implementation code.
+   - Verify that tests fail (Red) for unbuilt functionality.
+4. **Phase 4: Minimal Implementation**:
+   - Write only the minimum code necessary to make all tests pass (Green).
+   - Strictly honor SSoT `docs/DOKUMEN_TEKNIS/DESIGN.md` and `antislop` design guidelines.
+   - Refactor cleanly without speculative abstractions.
+5. **Phase 5: DoD & Quality Verification**:
+   - Run all automated checks (`pnpm test`, `pnpm typecheck`, `pnpm lint`).
+   - Validate that all 6 pillars of the Definition of Done are satisfied.
 
-### 2. Commit Standards
+### 2. Mandatory Unit Testing per Feature
+Every feature, mutation action, validation schema, security utility, and interactive component MUST have accompanying unit tests:
+- **Security & Sanitization**: Verify `DOMPurify` HTML/SVG stripping, regex blocking of phishing URLs, and salted SHA-256 IP hashing.
+- **Validation**: Verify Zod schemas for boundary conditions (name length 2–60, message length 3–500, pax 1–5, attendance enums).
+- **Audio Logic & State**: Verify no autoplay on load, physical user gesture unlock, linear volume fade-in ramp (0.0 to 0.8 over 2.5s), and auto-pause on background tab.
+- **UI Components**: Verify sentence case labels, `#FFFFFF` pure white background for QRIS modal, 1px divider lines for guestbook entries, and `prefers-reduced-motion` compliance.
+- **Server Actions**: Verify Cloudflare Turnstile token validation, rate limiter enforcement (3 submissions / 10 min), and standardized `ActionResponse<T>` envelopes.
+
+### 3. Pre-Commit Quality Gates (Definition of Done)
+Every contribution, feature branch, or automated agent PR MUST pass all quality checks prior to approval:
+1. **Automated Unit Tests**: `pnpm test` passes with 100% success rate.
+2. **Type Safety**: `pnpm typecheck` (`tsc --noEmit`) passes with 0 errors (strict mode, zero `any`).
+3. **Code Quality**: `pnpm lint` passes with 0 errors and 0 unused variable warnings.
+4. **Design Compliance**: UI components match tokens and rules in `docs/DOKUMEN_TEKNIS/DESIGN.md` (correct Surakarta palette, 3 fonts, sentence case, no tracked uppercase, radius 2px for buttons, radius 4px for cards).
+5. **Security Audit**: No credentials (`SUPABASE_SERVICE_ROLE_KEY`, `TURNSTILE_SECRET_KEY`, `.env*`) exposed to client bundles or tracked in git; zero instances of `dangerouslySetInnerHTML`.
+6. **Autoplay Compliance**: Audio components never attempt to execute `.play()` or `.resume()` outside an explicit user gesture.
+
+### 4. Commit Standards
 All git commits MUST follow the Conventional Commits specification:
 `<type>(<scope>): <short imperative description>`
 Valid types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
 Examples:
 - `feat(opening): implement 3D envelope fold with Surakarta lung-lungan ornaments`
+- `test(security): add test suite for phishing URL rejection and XSS sanitization`
 - `fix(security): reject messages containing phishing URL patterns in submitRSVP`
-- `docs(constitution): ratify project constitution v1.0.0`
+- `docs(constitution): bump constitution to v1.1.0 with engineering loop and DoD`
 
 ## Governance
 
@@ -115,4 +144,4 @@ This Constitution represents the supreme architectural and technical contract fo
    - **MINOR (1.X.0)**: Addition of new principles, architectural components, or materially expanded compliance guidelines.
    - **PATCH (1.0.X)**: Typographical fixes, clarifying explanations, and non-semantic adjustments.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-19 | **Last Amended**: 2026-09-19
+**Version**: 1.1.0 | **Ratified**: 2026-09-19 | **Last Amended**: 2026-09-19

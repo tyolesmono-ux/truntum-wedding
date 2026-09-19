@@ -128,6 +128,25 @@ Palet warna mengacu pada filosofi batik sogan Solo dan dodot keraton sebagaimana
 | :--- | :--- | :--- |
 | **OG Image Generator** | **`next/og` (Built-in ImageResponse)** | Modul bawaan Next.js App Router (berbasis Satori + Resvg). Merender kartu pratinjau tautan WhatsApp / Instagram secara dinamis berbasis JSX/HTML dan CSS flexbox. Mendukung injeksi nama tamu: `?to=Bapak+Budi+Sekeluarga` menghasilkan gambar 1200x630 bertuliskan nama tamu bersangkutan dalam hitungan milidetik di tepi jaringan (*edge*). |
 
+### 2.8 Automated Testing Layer (Unit & Component Testing)
+
+| Komponen | Teknologi | Versi Target | Peran & Justifikasi |
+| :--- | :--- | :--- | :--- |
+| **Test Runner** | **Vitest** | `^2.1.0` | Test runner modern berkecepatan tinggi dengan dukungan native TypeScript, ESM, dan konfigurasi instan kompatibel dengan ekosistem Next.js. |
+| **DOM Environment** | **jsdom** | `^25.0.0` | Simulasi DOM browser tanpa headless browser penuh untuk pengujian unit komponen reaktif secara cepat. |
+| **Component Testing** | **React Testing Library** | `^16.0.0` | Standar industri pengujian UI yang berfokus pada pengalaman pengguna aktual (aksesibilitas, label, teks, dan interaksi). |
+| **Custom Matchers** | **`@testing-library/jest-dom`** | `^6.5.0` | Utilitas *matcher* deklaratif (e.g. `toBeInTheDocument()`, `toHaveTextContent()`). |
+
+### 2.9 Static Analysis Layer (ESLint)
+
+| Komponen | Teknologi | Versi Target | Peran & Justifikasi |
+| :--- | :--- | :--- | :--- |
+| **Linter** | **ESLint** | `^9.39.5` | Linter dengan *flat config* (`eslint.config.mjs`) sebagai satu-satunya sumber aturan statis. Gerbang kualitas memakai `eslint .` langsung, menggantikan `next lint` yang di-deprecate pada Next.js 15. |
+| **Ruleset Next.js** | **`eslint-config-next`** | `^15.5.25` | Preset resmi Next.js (`next/core-web-vitals` dan `next/typescript`) yang mencakup aturan Core Web Vitals, React Hooks, dan TypeScript. Versi disamakan dengan `next` (`^15.5.0`) agar tidak terjadi drift antar-major. |
+| **Adapters** | **`@eslint/eslintrc`** | `^3.3.7` | Menyediakan `FlatCompat` untuk memuat preset `eslint-config-next` yang masih berbasis *eslintrc* ke dalam *flat config*. |
+
+Direktori perkakas agen (`.agent/`, `.agents/`, `.claude/`, `.gemini/`, `.hermes/`, `.impeccable/`, `.opencode/`, `.specify/`) diabaikan lewat kunci `ignores` agar berkas skrip vendored tidak masuk ke gerbang kualitas.
+
 ---
 
 ## 3. Package Dependencies Specification
@@ -143,8 +162,11 @@ Berikut adalah daftar dependensi target untuk file `package.json`:
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@supabase/ssr": "^0.5.1",
@@ -162,14 +184,23 @@ Berikut adalah daftar dependensi target untuk file `package.json`:
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20.16.11",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.25",
+    "jsdom": "^25.0.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.13",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.1"
   }
 }
 ```

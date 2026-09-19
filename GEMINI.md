@@ -73,9 +73,13 @@ This project maintains a knowledge graph. **ALWAYS** prefer MCP graph tools over
 *When to fall back to grep/glob*: Searching string literals, configuration files, environment keys, error messages, or non-code files.
 
 ### 3.2 Live Documentation Lookup (`context7`)
-Use the `context7` MCP server to fetch up-to-date documentation before implementing code with modern frameworks:
-1. Call `resolve-library-id` with the library name (e.g. `next`, `react`, `motion`, `lenis`, `supabase`, `tailwindcss`, `@cloudflare/turnstile`).
-2. Call `query-docs` using the resolved ID (e.g. `/vercel/next.js`, `/supabase/supabase`) scoped to specific concepts (e.g. Server Actions, Realtime CDC channels, Web Audio API, or Lenis configuration).
+Use the `context7` MCP server to fetch up-to-date documentation:
+1. **Mandatory in Planning & Specification Phases**:
+   - In **EVERY** planning, design, interview, or specification phase (`/grill-me`, `/brainstorming`, `/writing-plans`, `/speckit-plan`), you **MUST** call `context7` before proposing architecture, designing component interfaces, or drafting task lists.
+   - Strictly avoid relying on stale LLM training data for fast-evolving modern frameworks (Next.js 15, React 19, `motion/react`, Lenis, Supabase, Cloudflare Turnstile, Tailwind CSS).
+2. **Standard Resolution Flow**:
+   - Call `resolve-library-id` with the target library name (e.g. `next`, `react`, `motion`, `lenis`, `supabase`, `tailwindcss`, `@cloudflare/turnstile`).
+   - Call `query-docs` using the resolved ID (e.g. `/vercel/next.js`, `/supabase/supabase`) scoped to specific concepts (e.g. Server Actions, Realtime CDC channels, Web Audio API, or Lenis smooth scroll configuration).
 
 ---
 
@@ -88,25 +92,53 @@ Antigravity is equipped with specialized skills. Activate them according to task
 | **Pekerjaan UI, Komponen & Visual** | `impeccable` + `antislop-ui` | Pastikan seluruh komponen mematuhi SSoT [`docs/DOKUMEN_TEKNIS/DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md). Wajib: palet Surakarta (`#F6F1E7`, `#6B4423`, `#C2A05B`), 3 font (`Bodoni Moda`, `Jost`, `Amiri`), *sentence case*, dan pencegahan elemen template generik. |
 | **Penulisan Teks, Copywriting & Doa** | `antislop-copywriting` | Bahasa Indonesia formal dan santun (*"Kepada Bapak/Ibu/Saudara"*, *"Buka undangan"*, *"Nomor rekening tersalin"*). Larangan ALL CAPS ter-tracking. |
 | **Penyederhanaan & Anti-Overengineering** | `ponytail` (`/ponytail full`) | Wajib aktif setiap awal sesi. Utamakan kesederhanaan ekstrim (*lazy mode*, YAGNI). Gunakan native platform API dan pustaka standar sebelum menambahkan abstraksi berlebih. |
-| **Alur Spesifikasi Fitur** | `speckit-*` | Gunakan alur Spec Kit (`/speckit-specify`, `/speckit-plan`, `/speckit-tasks`, `/speckit-implement`) untuk pengembangan fitur terstruktur. |
+| **Alur Spesifikasi Fitur** | `speckit-*` | Gunakan alur Spec Kit (`/speckit-specify`, `/speckit-plan`, `/speckit-tasks`, `/speckit-implement`) untuk pengembangan fitur terstruktur. Wajib memanggil `context7` pada tahap `/speckit-plan`. |
+| **Eksplorasi Ide & Perencanaan** | `brainstorming` / `writing-plans` | Wajib panggil `context7` untuk verifikasi API terkini sebelum menyusun rencana teknis. |
+| **Wawancara Arsitektur** | `/grill-me` | Selaraskan preferensi pengguna dan uji batasan desain dengan bukti dokumentasi dari `context7`. |
+| **Pengembangan Berbasis Tes (TDD)** | `test-driven-development` | Tulis unit test Vitest (`*.test.ts` / `*.test.tsx`) terlebih dahulu sebelum menulis kode implementasi fitur. |
 | **Investigasi Masalah & Bug** | `systematic-debugging` | Lakukan investigasi akar masalah (*root-cause*) sebelum mengusulkan modifikasi kode. |
-| **Verifikasi Sebelum Klaim Selesai** | `verification-before-completion` | Jalankan `pnpm typecheck` dan `pnpm lint` di terminal dan periksa outputnya sebelum menyatakan tugas selesai. |
+| **Verifikasi Sebelum Klaim Selesai** | `verification-before-completion` | Jalankan `pnpm test`, `pnpm typecheck`, dan `pnpm lint` di terminal dan konfirmasi hasilnya sebelum menyatakan tugas selesai. |
 
 ---
 
-## 5. Planning Mode & Artifact Workflow
+## 5. The 5-Phase Engineering Loop & Workflow
 
-1. **When to Plan**:
-   If a task involves non-trivial architectural changes, creating new components, or modifying application state, enter **Planning Mode**:
-   - Research thoroughly using MCP graph tools and docs. Do not modify source code during research.
-   - Create or update `implementation_plan.md` in `<appDataDir>/brain/<conversation-id>/implementation_plan.md` with `user_facing: true` and `request_feedback: true`.
-   - **STOP** and wait for explicit user approval before executing changes.
-2. **Post-Execution Walkthrough**:
-   After executing an approved plan and passing automated verification (`typecheck` & `lint`), create or update `walkthrough.md` in the artifact directory detailing the changes and validation results.
+Setiap pengembangan fitur, refactor, atau perbaikan bug WAJIB mengikuti siklus rekayasa 5 fase ([`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md#8-loop-engineering-siklus-rekayasa-5-fase)):
+
+1. **Fase 1: Context & Discovery**:
+   - Telusuri graph kode via `codebase-memory-mcp`.
+   - **WAJIB**: Jalankan `context7` (`resolve-library-id` + `query-docs`) untuk memvalidasi API pustaka target.
+2. **Fase 2: Planning & Restraint (`/ponytail full`)**:
+   - Buat rencana minimalis (YAGNI, stdlib over dependencies, no bloat).
+   - Susun `implementation_plan.md` dengan `user_facing: true` & `request_feedback: true`.
+   - **STOP** dan tunggu konfirmasi eksplisit pengguna sebelum memodifikasi kode sumber.
+3. **Fase 3: Test-First Unit Testing**:
+   - Tulis berkas tes unit (`*.test.ts` / `*.test.tsx`) menggunakan Vitest & React Testing Library.
+   - Jalankan `pnpm test` dan pastikan tes gagal (*Red*) secara terkontrol.
+4. **Fase 4: Minimal Implementation & DESIGN SSoT**:
+   - Tulis kode implementasi minimal agar seluruh tes lulus (*Green*).
+   - Pastikan kepatuhan mutlak pada SSoT [`docs/DOKUMEN_TEKNIS/DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) dan filter `antislop`.
+   - Lakukan refactor bersih.
+5. **Fase 5: Definition of Done & Quality Gates**:
+   - Jalankan 3 perintah verifikasi otomatis: `pnpm test`, `pnpm typecheck`, `pnpm lint`.
+   - Verifikasi 6 pilar Definition of Done (DoD).
+   - Sajikan hasil akhir melalui `walkthrough.md`.
 
 ---
 
-## 6. Communication & Formatting Standards
+## 6. Definition of Done (DoD) Mandatory Checklist
+
+Sebelum menyatakan tugas selesai, Antigravity wajib memvalidasi 6 pilar DoD ([`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md#10-definition-of-done-dod)):
+1. **Design SSoT**: Palet Surakarta asli (`#F6F1E7`, `#6B4423`, `#C2A05B`, `#8C2F27`, `#231F1B`), 3 font (`Bodoni Moda`, `Jost`, `Amiri`), *sentence case* tanpa pengecualian, 2px/4px border radii.
+2. **Zero-Trust Security**: Rekening & QRIS immutable di `wedding-data.ts` (server constant), QRIS modal background `#FFFFFF`, sanitasi `DOMPurify`, blokir total regex tautan phishing, no `dangerouslySetInnerHTML`.
+3. **Audio & 60 FPS**: Tidak pernah autoplay saat load; aktivasi hanya via wax seal gesture; fade-in volume ramp 2.5s; auto-pause di background tab; hanya GPU composited animation (`transform`, `opacity`); bundle awal $\le 90\text{ KB}$ gzipped.
+4. **Automated Unit Tests**: Unit test baru dibuat untuk setiap fitur; `pnpm test` berjalan dengan tingkat kelulusan 100%.
+5. **Static Verification**: `pnpm typecheck` nol error; `pnpm lint` nol error dan nol warning.
+6. **Documentation & Traceability**: SSoT & spesifikasi teknis disinkronkan; commit pesan mengikuti format Conventional Commits.
+
+---
+
+## 7. Communication & Formatting Standards
 
 1. **Clickable Links**: You **MUST** format all file references as clickable Markdown links using the `file:///` scheme (e.g. [`DESIGN.md`](file:///home/disnakerska/Documents/Project/luxury-wedding-invitation/docs/DOKUMEN_TEKNIS/DESIGN.md)).
 2. **Language**: Respond concisely in fluent, polite Bahasa Indonesia when addressed by the user in Indonesian, maintaining an editorial and professional tone.

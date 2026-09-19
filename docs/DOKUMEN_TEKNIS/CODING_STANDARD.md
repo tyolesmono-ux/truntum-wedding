@@ -293,19 +293,146 @@ Hindari menganimasikan properti geometrik yang memicu *browser reflow* (`top`, `
 
 ---
 
-## 8. Git Commit & Quality Control Checklist
+## 8. Loop Engineering (Siklus Rekayasa 5 Fase)
 
-### 8.1 Format Pesan Commit (Conventional Commits)
+Setiap implementasi fitur, refactor, atau perbaikan bug di proyek ini WAJIB dijalankan melalui siklus rekayasa 5 fase berikut secara berurutan:
+
+```mermaid
+flowchart TD
+    Phase1["Fase 1: Context & Discovery<br/>• codebase-memory-mcp exploration<br/>• WAJIB context7 docs verification"] --> Phase2["Fase 2: Planning & Restraint<br/>• /grill-me /brainstorming /writing-plans /speckit-plan<br/>• /ponytail full (YAGNI & minimal code)<br/>• User Approval Gate"]
+    Phase2 --> Phase3["Fase 3: Test-First Unit Testing<br/>• Tulis unit test di Vitest (*.test.ts)<br/>• Verifikasi test gagal (RED)"]
+    Phase3 --> Phase4["Fase 4: Minimal Implementation<br/>• Tulis kode secukupnya hingga test lulus (GREEN)<br/>• Terapkan SSoT DESIGN.md & antislop<br/>• Refactor bersih tanpa spekulasi"]
+    Phase4 --> Phase5["Fase 5: DoD & Quality Gates<br/>• pnpm test (100% lulus)<br/>• pnpm typecheck (0 error)<br/>• pnpm lint (0 error/warning)<br/>• Conventional Commit & Walkthrough"]
+```
+
+### Rincian Fase:
+1. **Fase 1: Eksplorasi & Verifikasi Konteks (Scout & Context7)**:
+   - Telusuri graph kode menggunakan `codebase-memory-mcp` (`search_graph`, `trace_path`, `get_code_snippet`).
+   - **WAJIB CONTEXT7**: Pada setiap fase perencanaan, wawancara, atau pembuatan spesifikasi (`/grill-me`, `/brainstorming`, `/writing-plans`, `/speckit-plan`), agent WAJIB memanggil `context7` (`resolve-library-id` lalu `query-docs`) untuk memverifikasi dokumentasi terkini, tanda tangan fungsi (*API signature*), perubahan versi (*breaking changes*), dan praktik resmi dari pustaka terkait (Next.js 15, React 19, Motion `motion/react`, Lenis, Supabase, Cloudflare Turnstile, Tailwind CSS). Dilarang menebak API usang dari training data!
+2. **Fase 2: Perencanaan & Penyelarasan (Planning & Restraint)**:
+   - Terapkan direktif `/ponytail full`: Pertanyakan apakah kode perlu ditulis (YAGNI), manfaatkan fungsi bawaan (*native platform/stdlib*), gunakan helper yang sudah ada di repo, dan buat solusi paling ringkas.
+   - Siapkan `implementation_plan.md` atau `speckit-plan` dan **berhenti untuk meminta persetujuan pengguna** sebelum menyentuh berkas implementasi.
+3. **Fase 3: Spesifikasi Berbasis Pengujian (Test-First / TDD)**:
+   - **WAJIB UNIT TEST**: Tulis berkas pengujian unit (`*.test.ts` / `*.test.tsx`) terlebih dahulu sebelum menulis kode fitur.
+   - Pastikan skenario pengujian mencakup: *happy path*, *edge cases*, validasi batas input, serta penolakan skenario ancaman keamanan (*threat injection*).
+   - Jalankan `pnpm test` dan verifikasi bahwa pengujian gagal (*Red*) karena fitur belum diimplementasikan.
+4. **Fase 4: Implementasi Minimalis & Bersih (Green & Refactor)**:
+   - Tulis kode implementasi seminimal mungkin yang berhasil membuat seluruh unit test lulus (*Green*).
+   - Pastikan kepatuhan penuh terhadap SSoT [`DESIGN.md`](./DESIGN.md) melalui skill `impeccable` dan filter `antislop` (larangan kartu bertumpuk, larangan uppercase tracked, palet warna Surakarta).
+   - Rapikan kode (*Refactor*) tanpa menambahkan fitur spekulatif untuk masa depan.
+5. **Fase 5: Gerbang Kualitas & Bukti Nyata (DoD Verification)**:
+   - Jalankan seluruh perintah verifikasi secara otomatis di terminal: `pnpm test`, `pnpm typecheck`, dan `pnpm lint`.
+   - Konfirmasi bukti bahwa seluruh kriteria pada **Definition of Done (DoD)** telah terpenuhi sebelum menyatakan pekerjaan selesai.
+
+---
+
+## 9. Standar Pengujian Unit (Unit Testing per Feature)
+
+Setiap pembuatan fitur baru **WAJIB** disertai berkas pengujian unit (`*.test.ts` atau `*.test.tsx`) yang diletakkan berdampingan (*co-located*) atau di dalam folder `src/__tests__/`.
+
+### 9.1 Cakupan Pengujian Wajib per Lapisan Fitur:
+
+| Lapisan Fitur | Jenis Pengujian | Target Verifikasi Wajib |
+| :--- | :--- | :--- |
+| **Keamanan & Sanitasi** (`lib/security/*`) | Unit Test | • Pembersihan tag HTML/SVG/Script (`DOMPurify`).<br/>• Penolakan mutlak pesan yang memuat tautan/URL (`http://`, `https://`, `www.`, `bit.ly`).<br/>• Pembuatan hash IP salted SHA-256 yang konsisten dan anonim. |
+| **Skema Validasi** (`lib/validations/*`) | Unit Test | • Batas karakter nama ($2-60$) dan pesan ($3-500$).<br/>• Validasi integer pax count ($1-5$).<br/>• Nilai enum kehadiran (`attending` vs `declined`).<br/>• Pesan error kustom dalam Bahasa Indonesia santun. |
+| **Logika Audio & State** (`components/audio/*`) | Unit Test | • Status awal audio adalah `suspended` (tidak pernah autoplay).<br/>• Pemanggilan `resume()` terikat mutlak pada user gesture.<br/>• Linear volume ramp dari $0.0 \to 0.8$ selama $2.5$ detik.<br/>• Penjeda otomatis saat `document.visibilityState === 'hidden'`. |
+| **Komponen UI** (`components/*`) | Component Test | • Teks tombol dan label mematuhi *Sentence case* (tidak ada ALL CAPS ter-tracking).<br/>• Modal QRIS memiliki latar belakang putih murni `#FFFFFF`.<br/>• Garis pembatas buku tamu menggunakan 1px `--line` (bukan kartu bertumpuk).<br/>• Aksesibilitas: `aria-label`, target sentuh $\ge 44\text{px}$, dan dukungan `prefers-reduced-motion`. |
+| **Server Actions** (`actions/*`) | Integration Unit | • Penolakan bot jika token Turnstile tidak valid.<br/>• Pembatasan laju kirim (*rate limiting*) jika kuota 3 submit / 10 menit terlampaui.<br/>• Struktur amplop respons seragam `ActionResponse<T>`. |
+
+### 9.2 Contoh Kode Pengujian Unit (Vitest)
+```typescript
+// src/lib/security/sanitize.test.ts
+import { describe, it, expect } from 'vitest';
+import { sanitizeGuestMessage } from './sanitize';
+
+describe('Security Sanitizer: sanitizeGuestMessage', () => {
+  it('harus meloloskan teks doa restu bersih dan santun', () => {
+    const input = 'Selamat menempuh hidup baru Ananda & Bagus!';
+    const result = sanitizeGuestMessage(input);
+    expect(result.isValid).toBe(true);
+    expect(result.sanitizedText).toBe('Selamat menempuh hidup baru Ananda & Bagus!');
+  });
+
+  it('harus menolak pesan yang memuat tautan web atau URL phishing', () => {
+    const inputsWithLinks = [
+      'Selamat ya! Lihat foto kami di https://evil-site.com',
+      'Doa terbaik dari kami www.penipuan.id/hadiah',
+      'Klik bit.ly/undangan-palsu untuk konfirmasi',
+    ];
+
+    inputsWithLinks.forEach((input) => {
+      const result = sanitizeGuestMessage(input);
+      expect(result.isValid).toBe(false);
+      expect(result.errorMessage).toContain('tidak boleh mengandung tautan link web');
+    });
+  });
+
+  it('harus membersihkan seluruh tag HTML/XSS berbahaya', () => {
+    const xssPayload = '<script>alert("hack")</script>Semoga bahagia selamanya!<img src=x onerror=alert(1)>';
+    const result = sanitizeGuestMessage(xssPayload);
+    expect(result.isValid).toBe(true);
+    expect(result.sanitizedText).toBe('Semoga bahagia selamanya!');
+    expect(result.sanitizedText).not.toContain('<script>');
+    expect(result.sanitizedText).not.toContain('<img');
+  });
+});
+```
+
+---
+
+## 10. Definition of Done (DoD)
+
+Sebuah fitur atau tugas koding dinyatakan **SELESAI (DONE)** HANYA jika telah memenuhi seluruh poin dalam matriks Definition of Done berikut tanpa kompromi:
+
+```markdown
+### 📋 Definition of Done Checklist
+
+#### 1. Kesesuaian Desain & SSoT (DESIGN.md)
+- [ ] Menggunakan palet resmi Surakarta: Gading (`#F6F1E7`), Melati (`#FCFAF5`), Sogan (`#6B4423`), Prada (`#C2A05B`), Cinde (`#8C2F27`), Wulung (`#231F1B`).
+- [ ] Menggunakan maksimal 3 font resmi: Bodoni Moda (Display $\ge 22\text{px}$), Jost (Body & UI), Amiri (Arab Ar-Rum 21).
+- [ ] Semua label, judul, dan tombol menggunakan **Sentence case** (Dilarang ada ALL CAPS ter-tracking).
+- [ ] Radius sudut konsisten: 2px untuk tombol/input, 4px untuk kartu/modal.
+- [ ] Tidak menggunakan pola template generik (tanpa kartu bertumpuk di buku tamu, tanpa efek hover berlebih, tanpa fade-up di setiap section).
+
+#### 2. Keamanan Finansial & Zero-Trust Input
+- [ ] Rekening bank dan QRIS steril: Berada di konstanta server `wedding-data.ts` (`as const`), bukan di database.
+- [ ] Modal tampilan QRIS menggunakan latar belakang putih murni `#FFFFFF`.
+- [ ] Input formulir buku tamu disanitasi via `DOMPurify` dan memblokir seluruh pola tautan/URL via regex.
+- [ ] Bebas dari penggunaan `dangerouslySetInnerHTML`.
+- [ ] Formulir publik diproteksi oleh verifikasi Cloudflare Turnstile dan pembatasan laju IP (maks 3 req / 10 min).
+
+#### 3. Kepatuhan Audio & Performa 60 FPS
+- [ ] Audio tidak pernah memutar otomatis (*no autoplay on load*). Wajib dibuka melalui sentuhan segel lilin (`WaxSeal.tsx`).
+- [ ] Volume audio naik bertahap (*linear ramp fade-in*) dari 0.0 ke 0.8 dalam 2.5 detik via Web Audio API.
+- [ ] Pemutaran audio otomatis jeda saat tab browser diminimalkan (`visibilitychange`).
+- [ ] Hanya menganimasikan properti terakselerasi GPU (`transform`, `opacity`).
+- [ ] Ukuran berkas dan bundel mematuhi anggaran performa (JS awal $\le 90\text{ KB}$ gzipped).
+
+#### 4. Pengujian Unit Otomatis (Automated Unit Tests)
+- [ ] Berkas pengujian unit (`*.test.ts` / `*.test.tsx`) telah dibuat mencakup skenario sukses, skenario gagal, dan batas keamanan.
+- [ ] Seluruh unit test berjalan dan lulus 100% (`pnpm test` exit code 0).
+
+#### 5. Gerbang Kualitas Statis (Static Verification)
+- [ ] `pnpm typecheck` (`tsc --noEmit`) lulus dengan **0 error** (tidak ada tipe `any` atau loose casting).
+- [ ] `pnpm lint` lulus dengan **0 error** dan **0 peringatan**.
+- [ ] Tidak ada berkas kredensial (`.env*`, kunci, token) yang disentuh atau dimasukkan ke git tracking.
+
+#### 6. Dokumentasi & Pelacakan
+- [ ] Perubahan kontrak arsitektur atau skema data diperbarui pada dokumentasi terkait di `docs/DOKUMEN_TEKNIS/`.
+- [ ] Commit git mengikuti standar Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`).
+```
+
+---
+
+## 11. Git Commit & Release Protocol
+
+### 11.1 Format Pesan Commit (Conventional Commits)
 Gunakan format standar: `<type>(<scope>): <short description>`
 - `feat(opening)`: implement 3D envelope fold and wax seal crack animation
-- `feat(audio)`: add Web Audio API linear fade-in controller
-- `fix(security)`: add URL pattern rejection in guestbook sanitization
+- `test(security)`: add comprehensive unit tests for URL blocker and DOMPurify sanitization
+- `feat(audio)`: add Web Audio API linear fade-in controller with autoplay compliance
+- `fix(guestbook)`: reject phishing link patterns in submitRSVP server action
 - `perf(gallery)`: optimize masonry images with Next.js Image and AVIF format
 - `docs(api)`: update submitRSVP response payload documentation
 
-### 8.2 Checklist Sebelum Merge / Selesai Tugas
-- [ ] Jalankan `pnpm typecheck` (`tsc --noEmit`) tanpa satupun error tipe.
-- [ ] Jalankan `pnpm lint` dan pastikan tidak ada peringatan kode mati atau variabel tak terpakai.
-- [ ] Pastikan tidak ada `console.log` debug yang tertinggal di berkas produksi.
-- [ ] Pastikan tidak ada kredensial atau rahasia server (misal: `SUPABASE_SERVICE_ROLE_KEY`) yang bocor ke Client Components atau git tracking.
-- [ ] Pastikan tidak ada penggunaan `dangerouslySetInnerHTML`.

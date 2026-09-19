@@ -17,7 +17,7 @@ Gunakan tabel navigasi cepat berikut untuk menemukan spesifikasi teknis dan pand
 | **Arsitektur Sistem & Topologi** | [`docs/DOKUMEN_TEKNIS/ARCHITECTURE.md`](./docs/DOKUMEN_TEKNIS/ARCHITECTURE.md) | Diagram topologi sistem, pemisahan Server vs Client Components, diagram siklus hidup amplop 3D, *state machine* Web Audio API, dan alur realtime buku tamu. |
 | **Skema Database & Migrasi SQL** | [`docs/DOKUMEN_TEKNIS/DATABASE_ERD.md`](./docs/DOKUMEN_TEKNIS/DATABASE_ERD.md) | Diagram ERD Mermaid, kamus data tabel `public.rsvps`, indeks performa kueri, kebijakan *Row Level Security* (RLS), konfigurasi WebSocket Supabase, dan skrip SQL migrasi lengkap (`schema.sql`). |
 | **Spesifikasi API & Server Actions** | [`docs/DOKUMEN_TEKNIS/API_DOCUMENTATION.md`](./docs/DOKUMEN_TEKNIS/API_DOCUMENTATION.md) | Dokumentasi lengkap Server Action `submitRSVP`, skema validasi Zod, generator gambar dinamis Edge `GET /api/og`, WebSocket channel, dan contoh integrasi form dengan `canvas-confetti`. |
-| **Standar Koding & Pedoman Rekayasa** | [`docs/DOKUMEN_TEKNIS/CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md) | Aturan TypeScript ketat (larangan `any`), konvensi penamaan berkas, pola RSC Next.js 15, akselerasi GPU 60 FPS untuk animasi Motion, utilitas styling `cn()`, dan aturan Conventional Commits. |
+| **Standar Koding & Pedoman Rekayasa** | [`docs/DOKUMEN_TEKNIS/CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md) | Loop Engineering 5 fase, standar pengujian unit (Vitest), matriks Definition of Done (DoD), aturan TypeScript ketat (larangan `any`), pola RSC Next.js 15, akselerasi GPU 60 FPS, dan Conventional Commits. |
 | **Panduan Roadmap & Rencana Pengerjaan** | [`ROADMAP_PENGERJAAN.md`](./ROADMAP_PENGERJAAN.md) | Rencana aksi 7 fase berurutan dari setup fondasi hingga audit penetrasi keamanan dan uji lintas perangkat. |
 | **Kebijakan Keamanan & Hardening** | [`docs/DOKUMEN_TEKNIS/SECURITY.md`](./docs/DOKUMEN_TEKNIS/SECURITY.md) | Pemodelan ancaman (*Threat Modeling*), arsitektur isolasi data finansial (*Anti-Tampering* rekening/QRIS), sanitasi XSS (`DOMPurify`), pemblokir tautan phishing, proteksi bot *Cloudflare Turnstile*, CSP middleware, dan tombol darurat (*kill switch*). |
 
@@ -143,13 +143,16 @@ Akses aplikasi di browser pada: `http://localhost:3000` (atau gunakan parameter 
 
 ---
 
-## 🧪 Validasi Kualitas & Pengujian
+## 🧪 Validasi Kualitas & Pengujian (Definition of Done)
 
-Sebelum mengajukan *pull request* atau menyelesaikan implementasi fitur:
+Sebelum menyelesaikan implementasi fitur atau mengajukan *pull request*, setiap agen dan pengembang WAJIB menjalankan dan memverifikasi seluruh perintah berikut:
 ```bash
-# Pemeriksaan tipe statis (wajib nol error)
+# Menjalankan seluruh pengujian unit otomatis (wajib 100% lulus)
+pnpm test
+
+# Pemeriksaan tipe statis TypeScript (wajib 0 error)
 pnpm typecheck
 
-# Pemeriksaan linter kode
+# Pemeriksaan linter kode ESLint (wajib 0 error dan 0 warning)
 pnpm lint
 ```

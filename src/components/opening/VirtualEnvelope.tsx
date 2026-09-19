@@ -73,9 +73,9 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
             <p className="font-body text-xs md:text-sm text-[#8A7862] tracking-wider">
               Kepada Bapak/Ibu/Saudara
             </p>
-            <h1 className="font-display text-2xl md:text-3xl font-normal text-[#EFE6D6] tracking-normal px-2">
+            <h2 className="font-display text-2xl md:text-3xl font-normal text-[#EFE6D6] tracking-normal px-2">
               {displayName}
-            </h1>
+            </h2>
             <div className="flex items-center justify-center gap-2 pt-1 opacity-60">
               <span className="h-[1px] w-6 bg-[#C2A05B]" />
               <span className="font-body text-[10px] text-[#C2A05B]">✦</span>

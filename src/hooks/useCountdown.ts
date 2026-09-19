@@ -28,31 +28,15 @@ export function useCountdown(targetIsoDate: string): CountdownState {
   useEffect(() => {
     function calculate(): CountdownState {
       const targetTime = new Date(targetIsoDate).getTime();
-      const now = Date.now();
-      const diff = targetTime - now;
-
-      if (isNaN(targetTime) || diff <= 0) {
-        return {
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          isExpired: true,
-          isMounted: true,
-        };
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      const diff = isNaN(targetTime) ? 0 : targetTime - Date.now();
+      const remaining = Math.max(0, diff);
 
       return {
-        days,
-        hours,
-        minutes,
-        seconds,
-        isExpired: false,
+        days: Math.floor(remaining / 86400000),
+        hours: Math.floor((remaining % 86400000) / 3600000),
+        minutes: Math.floor((remaining % 3600000) / 60000),
+        seconds: Math.floor((remaining % 60000) / 1000),
+        isExpired: diff <= 0,
         isMounted: true,
       };
     }

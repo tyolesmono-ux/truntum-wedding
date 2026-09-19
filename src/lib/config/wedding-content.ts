@@ -38,6 +38,25 @@ export interface WeddingEventSession {
   readonly wazeUrl: string;
 }
 
+export interface LoveStoryMilestone {
+  readonly id: string;
+  readonly year: string;
+  readonly period: string;
+  readonly title: string;
+  readonly story: string;
+}
+
+export interface GalleryPhoto {
+  readonly id: string;
+  readonly src: string;
+  readonly alt: string;
+  readonly width: number;
+  readonly height: number;
+  readonly aspectRatio: 'landscape' | 'portrait';
+  readonly caption?: string;
+  readonly blurDataUrl?: string;
+}
+
 export interface WeddingContentConfig {
   readonly couple: {
     readonly groom: WeddingPerson;
@@ -51,7 +70,13 @@ export interface WeddingContentConfig {
     readonly dateFormal: string;
     readonly coverImageUrl: string;
   };
+  readonly loveStory: readonly LoveStoryMilestone[];
+  readonly gallery: readonly GalleryPhoto[];
 }
+
+// Placeholder buram Kertas Batik (#E8DCC8) sesuai DESIGN.md 9.3, dipakai seluruh foto galeri.
+const KERTAS_BATIK_BLUR =
+  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'%3E%3Crect width='1' height='1' fill='%23E8DCC8'/%3E%3C/svg%3E";
 
 function deepFreeze<T extends object>(obj: T): T {
   Object.freeze(obj);
@@ -127,6 +152,104 @@ export const WEDDING_CONTENT_CONFIG: WeddingContentConfig = deepFreeze({
       address: 'Jl. Baluwarti No. 1, Kompleks Keraton Kasunanan Surakarta Hadiningrat, Surakarta',
       googleMapsUrl: 'https://maps.google.com/?q=Keraton+Surakarta+Hadiningrat',
       wazeUrl: 'https://waze.com/ul?q=Keraton+Surakarta+Hadiningrat',
+    },
+  ],
+  loveStory: [
+    {
+      id: 'pertemuan-pertama',
+      year: '2021',
+      period: 'Agustus 2021',
+      title: 'Awal mula pertemuan',
+      story:
+        'Di bawah naungan keteduhan kota Surakarta, takdir mempertemukan dua insan dalam perbincangan santun yang menumbuhkan rasa saling percaya dan saling menghargai.',
+    },
+    {
+      id: 'ikrar-komitmen',
+      year: '2024',
+      period: 'Mei 2024',
+      title: 'Menjalin doa dan komitmen',
+      story:
+        'Seiring berjalannya waktu dan kedewasaan hati, doa-doa yang terpanjat perlahan menemukan muaranya untuk saling menjaga, melangkah beriringan, dan memohon ridho kedua orang tua.',
+    },
+    {
+      id: 'menuju-pelaminan',
+      year: '2026',
+      period: 'Oktober 2026',
+      title: 'Langkah menuju janji suci',
+      story:
+        'Dengan restu dan doa tulus seluruh keluarga besar, kami memantapkan niat suci untuk mengikat janji setia dalam bingkai pernikahan yang sakral dan penuh berkah.',
+    },
+  ],
+  gallery: [
+    {
+      id: 'gallery-01',
+      src: '/images/gallery/gallery-01-momen-berdua.svg',
+      alt: 'Bagus dan Ananda berfoto berdua di pelataran keraton Surakarta',
+      width: 1200,
+      height: 675,
+      aspectRatio: 'landscape',
+      caption: 'Momen berdua di pelataran keraton.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-02',
+      src: '/images/gallery/gallery-02-potret-tradisional.svg',
+      alt: 'Potret Ananda mengenakan busana tradisional Solo dengan kain batik sogan',
+      width: 900,
+      height: 1200,
+      aspectRatio: 'portrait',
+      caption: 'Busana tradisional Solo dalam balutan batik sogan.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-03',
+      src: '/images/gallery/gallery-03-detail-batik.svg',
+      alt: 'Detail selendang batik sogan dan aksesori pengantin wanita',
+      width: 900,
+      height: 1200,
+      aspectRatio: 'portrait',
+      caption: 'Detail selendang batik sogan dan aksesori.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-04',
+      src: '/images/gallery/gallery-04-arsitektur-surakarta.svg',
+      alt: 'Bagus dan Ananda berlatar arsitektur klasik Surakarta',
+      width: 1200,
+      height: 675,
+      aspectRatio: 'landscape',
+      caption: 'Arsitektur klasik Surakarta sebagai latar.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-05',
+      src: '/images/gallery/gallery-05-potret-senyum.svg',
+      alt: 'Potret wajah Ananda dengan senyuman tulus',
+      width: 900,
+      height: 1200,
+      aspectRatio: 'portrait',
+      caption: 'Senyuman tulus menjelang hari bahagia.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-06',
+      src: '/images/gallery/gallery-06-genggaman-do.svg',
+      alt: 'Tangan Bagus dan Ananda tergenggam dalam doa bersama',
+      width: 900,
+      height: 1200,
+      aspectRatio: 'portrait',
+      caption: 'Doa bersama dalam genggaman tangan.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
+    },
+    {
+      id: 'gallery-07',
+      src: '/images/gallery/gallery-07-siluet-senja.svg',
+      alt: 'Siluet Bagus dan Ananda di balai kota Surakarta saat senja',
+      width: 1200,
+      height: 675,
+      aspectRatio: 'landscape',
+      caption: 'Siluet senja di balai kota Surakarta.',
+      blurDataUrl: KERTAS_BATIK_BLUR,
     },
   ],
 } as const);

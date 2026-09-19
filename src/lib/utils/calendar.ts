@@ -5,15 +5,7 @@ import { WeddingEventSession } from '@/lib/config/wedding-content';
  * menjadi format UTC ISO ringkas RFC 5545 (20261212T010000Z).
  */
 export function formatUtcCompact(isoString: string): string {
-  const date = new Date(isoString);
-  const year = date.getUTCFullYear().toString().padStart(4, '0');
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-  const day = date.getUTCDate().toString().padStart(2, '0');
-  const hours = date.getUTCHours().toString().padStart(2, '0');
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-  const seconds = date.getUTCSeconds().toString().padStart(2, '0');
-
-  return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+  return new Date(isoString).toISOString().replace(/[-:]|\.\d{3}/g, '');
 }
 
 /**

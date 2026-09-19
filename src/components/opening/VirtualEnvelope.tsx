@@ -7,7 +7,11 @@ import { WaxSeal } from './WaxSeal';
 import { InvitationLetter } from './InvitationLetter';
 import { useOptionalAudio } from '@/contexts/AudioContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { VirtualEnvelopeProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
+
+export interface VirtualEnvelopeProps {
+  guestName?: string;
+  onOpened?: () => void;
+}
 
 export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
   const [isOpened, setIsOpened] = useState(false);
@@ -23,12 +27,7 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
 
   // Body scroll lock management
   useEffect(() => {
-    if (!isOpened) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
+    document.body.style.overflow = isOpened ? '' : 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
@@ -91,12 +90,7 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
 
           {/* 3D Realistic Virtual Envelope Container */}
           <div className="relative my-auto [perspective:1200px] flex items-center justify-center">
-            <div
-              className={cn(
-                'relative w-[300px] h-[200px] [transform-style:preserve-3d]',
-                'transition-transform duration-300'
-              )}
-            >
+            <div className="relative w-[300px] h-[200px] [transform-style:preserve-3d]">
               {/* Layer 0: Backplate */}
               <div
                 className={cn(

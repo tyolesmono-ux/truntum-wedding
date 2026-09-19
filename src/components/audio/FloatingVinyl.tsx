@@ -5,7 +5,10 @@ import { Play, Pause } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAudio } from '@/contexts/AudioContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { FloatingVinylProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
+
+export interface FloatingVinylProps {
+  className?: string;
+}
 
 export function FloatingVinyl({ className }: FloatingVinylProps) {
   const { isPlaying, togglePlay } = useAudio();

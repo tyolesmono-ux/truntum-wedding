@@ -3,7 +3,12 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
-import { InvitationLetterProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
+
+export interface InvitationLetterProps {
+  guestName: string;
+  isSliding?: boolean;
+  className?: string;
+}
 
 export function InvitationLetter({
   guestName,

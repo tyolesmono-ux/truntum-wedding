@@ -4,7 +4,13 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { WaxSealProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
+
+export interface WaxSealProps {
+  onClick: () => void;
+  isOpening?: boolean;
+  monogram?: string;
+  className?: string;
+}
 
 export function WaxSeal({
   onClick,

@@ -10,17 +10,14 @@ interface PageProps {
 }
 
 export default async function HomePage(props: PageProps) {
-  const resolvedSearchParams = props.searchParams ? await props.searchParams : undefined;
+  const searchParams = props.searchParams ? await props.searchParams : undefined;
   let guestName = 'Tamu Undangan';
 
-  if (resolvedSearchParams?.to) {
+  if (searchParams?.to) {
     try {
-      const decoded = decodeURIComponent(resolvedSearchParams.to).trim();
-      if (decoded) {
-        guestName = decoded;
-      }
+      guestName = decodeURIComponent(searchParams.to).trim() || 'Tamu Undangan';
     } catch {
-      guestName = 'Tamu Undangan';
+      // Keep formal fallback if URI is malformed
     }
   }
 

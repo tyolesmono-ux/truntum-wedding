@@ -14,6 +14,10 @@ export interface AudioContextValue {
 
 const AudioContextInstance = createContext<AudioContextValue | null>(null);
 
+export function useOptionalAudio(): AudioContextValue | null {
+  return useContext(AudioContextInstance);
+}
+
 export function useAudio(): AudioContextValue {
   const context = useContext(AudioContextInstance);
   if (!context) {

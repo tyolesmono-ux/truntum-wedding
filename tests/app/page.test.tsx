@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import HomePage from '@/app/page';
@@ -29,6 +29,14 @@ describe('Root Page Smoke Test', () => {
 
     expect(screen.getAllByText('Bapak Raden Mas').length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByRole('button', { name: 'Buka undangan' }).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('renders FloatingVinyl player controls', async () => {
+    const pageComponent = await HomePage({ searchParams: Promise.resolve({}) });
+    render(pageComponent);
+
+    expect(screen.getByTestId('floating-vinyl-player')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Putar musik' })).toBeInTheDocument();
   });
 });
 

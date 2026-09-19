@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { WaxSeal } from './WaxSeal';
 import { InvitationLetter } from './InvitationLetter';
-import { useAudio } from '@/contexts/AudioContext';
+import { useOptionalAudio } from '@/contexts/AudioContext';
 import { VirtualEnvelopeProps } from '../../../specs/002-virtual-envelope-audio/contracts/virtual-envelope.contract';
 
 export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
@@ -14,12 +14,7 @@ export function VirtualEnvelope({ guestName, onOpened }: VirtualEnvelopeProps) {
   const [hasInteracted, setHasInteracted] = useState(false);
 
   // Audio engine context integration (graceful if outside provider)
-  let audioContext: ReturnType<typeof useAudio> | null = null;
-  try {
-    audioContext = useAudio();
-  } catch {
-    audioContext = null;
-  }
+  const audioContext = useOptionalAudio();
 
   // Sanitized display name with formal fallback
   const displayName = guestName && guestName.trim().length > 0 ? guestName.trim() : 'Tamu Undangan';

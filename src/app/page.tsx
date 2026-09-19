@@ -2,14 +2,15 @@ import React from 'react';
 import { KawungBackground } from '@/components/ornaments/KawungBackground';
 import { TruntumDivider } from '@/components/ornaments/TruntumDivider';
 import { VirtualEnvelope } from '@/components/opening/VirtualEnvelope';
+import { FloatingVinyl } from '@/components/audio/FloatingVinyl';
 import { AudioProvider } from '@/contexts/AudioContext';
 
 interface PageProps {
   searchParams?: Promise<{ to?: string }>;
 }
 
-export default async function HomePage({ searchParams }: PageProps = {}) {
-  const resolvedSearchParams = searchParams ? await searchParams : undefined;
+export default async function HomePage(props: PageProps) {
+  const resolvedSearchParams = props.searchParams ? await props.searchParams : undefined;
   let guestName = 'Tamu Undangan';
 
   if (resolvedSearchParams?.to) {
@@ -27,6 +28,9 @@ export default async function HomePage({ searchParams }: PageProps = {}) {
     <AudioProvider>
       {/* Opening Gate: 3D Virtual Envelope Overlay */}
       <VirtualEnvelope guestName={guestName} />
+
+      {/* Floating Audio Controller */}
+      <FloatingVinyl />
 
       {/* Main Content Flow */}
       <main className="relative min-h-screen flex flex-col items-center justify-center p-6 text-center">

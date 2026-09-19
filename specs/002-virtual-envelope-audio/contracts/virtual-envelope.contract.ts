@@ -3,7 +3,7 @@
  * SSoT: docs/DOKUMEN_TEKNIS/DESIGN.md & PRD.md
  */
 
-import React from 'react';
+
 
 export interface VirtualEnvelopeProps {
   /**

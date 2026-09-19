@@ -55,27 +55,27 @@ graph TD
 **Tujuan**: Mengunci data finansial secara permanen, membangun skema basis data Supabase dengan RLS deklaratif, serta menyiapkan gerbang sanitasi input anti-XSS.  
 **Acuan SSoT**: [`SECURITY.md`](./docs/DOKUMEN_TEKNIS/SECURITY.md), [`DATABASE_ERD.md`](./docs/DOKUMEN_TEKNIS/DATABASE_ERD.md), [`API_DOCUMENTATION.md`](./docs/DOKUMEN_TEKNIS/API_DOCUMENTATION.md)
 
-- [ ] **1.1 Modul Konfigurasi Finansial Imutabel (`src/lib/config/wedding-data.ts`)**:
+- [x] **1.1 Modul Konfigurasi Finansial Imutabel (`src/lib/config/wedding-data.ts`)**:
   - Tulis konstanta server-only `WEDDING_GIFT_CONFIG` bertipe `as const` (Rekening BCA, Rekening Mandiri, aset QRIS lokal).
   - Dilarang membuat endpoint mutasi atau tabel database publik untuk data rekening/QRIS.
-- [ ] **1.2 Migrasi Database PostgreSQL (Supabase)**:
+- [x] **1.2 Migrasi Database PostgreSQL (Supabase)**:
   - Buat enum `attendance_enum ('attending', 'declined')`.
   - Buat tabel `public.rsvps` (kolom: `id`, `guest_name`, `attendance_status`, `pax_count`, `message`, `ip_hash`, `created_at`).
   - Buat indeks `idx_rsvps_created_at` untuk performa *realtime feed*.
   - Aktifkan *Row Level Security* (RLS) dengan kebijakan: publik hanya dapat `SELECT` dan `INSERT`; `UPDATE` & `DELETE` diblokir total kecuali admin.
   - Tambahkan tabel `public.rsvps` ke publikasi `supabase_realtime`.
-- [ ] **1.3 Supabase Client & Server Helpers (`@supabase/ssr`)**:
+- [x] **1.3 Supabase Client & Server Helpers (`@supabase/ssr`)**:
   - `src/lib/supabase/client.ts`: Inisialisasi browser client untuk realtime listener.
   - `src/lib/supabase/server.ts`: Inisialisasi server client yang kompatibel dengan Next.js 15 (`await cookies()`).
-- [ ] **1.4 Modul Sanitasi Input & Deteksi Phishing (`src/lib/security/sanitize.ts`)**:
+- [x] **1.4 Modul Sanitasi Input & Deteksi Phishing (`src/lib/security/sanitize.ts`)**:
   - Terapkan `DOMPurify` di sisi server untuk membersihkan seluruh tag HTML/Markdown.
   - Terapkan regex blocker terhadap tautan (`/(https?:\/\/|www\.|\.com|\.org|\.net|\.id|\.xyz|bit\.ly|t\.me)/i`). Pesan bertautan langsung ditolak.
-- [ ] **1.5 Verifikasi Cloudflare Turnstile & Rate Limiter**:
+- [x] **1.5 Verifikasi Cloudflare Turnstile & Rate Limiter**:
   - Helper verifikasi token Turnstile server-to-server (`/turnstile/v0/siteverify`).
   - In-memory / KV rate limiter berbasis hash SHA-256 IP bersalt (maksimal 3 submit per IP per 10 menit).
-- [ ] **1.6 Next.js Server Action (`src/actions/submit-rsvp.ts`)**:
+- [x] **1.6 Next.js Server Action (`src/actions/submit-rsvp.ts`)**:
   - Implementasi alur: Validasi Rate Limit $\rightarrow$ Verifikasi Turnstile $\rightarrow$ Validasi Skema Zod $\rightarrow$ Sanitasi Teks $\rightarrow$ Insert DB $\rightarrow$ Return Envelope `{ success: true, data }`.
-- [ ] **1.7 Security Middleware (`middleware.ts`)**:
+- [x] **1.7 Security Middleware (`middleware.ts`)**:
   - Terapkan Content Security Policy (CSP), HSTS, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, dan `Permissions-Policy`.
 
 ---

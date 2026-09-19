@@ -10,8 +10,8 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 **Purpose**: Menyiapkan struktur direktori pengujian dan mocking dasar sebelum implementasi fitur dimulai.
 
-- [ ] T001 [P] Ensure test directory structure exists for unit tests in `tests/unit/`
-- [ ] T002 [P] Configure Vitest test setup and test environment mock helpers in `vitest.setup.ts`
+- [x] T001 [P] Ensure test directory structure exists for unit tests in `tests/unit/`
+- [x] T002 [P] Configure Vitest test setup and test environment mock helpers in `vitest.setup.ts`
 
 ---
 
@@ -21,10 +21,10 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 **⚠️ CRITICAL**: Seluruh user story bergantung pada selesainya fase fondasi ini.
 
-- [ ] T003 Create PostgreSQL database migration with `attendance_enum`, `public.rsvps` table, composite indexes, RLS policies, and realtime publication in `supabase/migrations/00001_initial_schema.sql`
-- [ ] T004 [P] Implement Supabase browser client helper using `@supabase/ssr` in `src/lib/supabase/client.ts`
-- [ ] T005 [P] Implement Supabase server client helper using `@supabase/ssr` with `await cookies()` and least-privilege anon key in `src/lib/supabase/server.ts`
-- [ ] T006 [P] Implement core validation schema and TypeScript types (`RSVPInput`, `ActionResponse`, `rsvpSchema`) in `src/lib/validations/rsvp-schema.ts`
+- [x] T003 Create PostgreSQL database migration with `attendance_enum`, `public.rsvps` table, composite indexes, RLS policies, and realtime publication in `supabase/migrations/00001_initial_schema.sql`
+- [x] T004 [P] Implement Supabase browser client helper using `@supabase/ssr` in `src/lib/supabase/client.ts`
+- [x] T005 [P] Implement Supabase server client helper using `@supabase/ssr` with `await cookies()` and least-privilege anon key in `src/lib/supabase/server.ts`
+- [x] T006 [P] Implement core validation schema and TypeScript types (`RSVPInput`, `ActionResponse`, `rsvpSchema`) in `src/lib/validations/rsvp-schema.ts`
 
 **Checkpoint**: Fondasi database Supabase dan validasi Zod siap digunakan oleh Server Action.
 
@@ -38,13 +38,13 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 ### Tests for User Story 1 (TDD - Test-First) ⚠️
 
-- [ ] T007 [P] [US1] Write unit tests for Server Action `submitRSVP` standard submission and Zod validations in `tests/unit/submit-rsvp.test.ts`
-- [ ] T008 [P] [US1] Write unit tests for Cloudflare Turnstile token verification in `tests/unit/turnstile.test.ts`
+- [x] T007 [P] [US1] Write unit tests for Server Action `submitRSVP` standard submission and Zod validations in `tests/unit/submit-rsvp.test.ts`
+- [x] T008 [P] [US1] Write unit tests for Cloudflare Turnstile token verification in `tests/unit/turnstile.test.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Implement Cloudflare Turnstile token verification helper in `src/lib/security/turnstile.ts`
-- [ ] T010 [US1] Implement core Server Action `submitRSVP` for valid guest submissions and database persistence in `src/actions/submit-rsvp.ts`
+- [x] T009 [US1] Implement Cloudflare Turnstile token verification helper in `src/lib/security/turnstile.ts`
+- [x] T010 [US1] Implement core Server Action `submitRSVP` for valid guest submissions and database persistence in `src/actions/submit-rsvp.ts`
 
 **Checkpoint**: User Story 1 (MVP) beroperasi penuh dan dapat diuji secara mandiri.
 
@@ -58,16 +58,16 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 ### Tests for User Story 2 (TDD - Test-First) ⚠️
 
-- [ ] T011 [P] [US2] Write unit tests for anti-phishing URL regex rejection and DOMPurify XSS stripping in `tests/unit/sanitize.test.ts`
-- [ ] T012 [P] [US2] Write unit tests for salted SHA-256 IP hashing in `tests/unit/ip.test.ts`
-- [ ] T013 [P] [US2] Write unit tests for in-memory sliding window rate limiter in `tests/unit/rate-limit.test.ts`
+- [x] T011 [P] [US2] Write unit tests for anti-phishing URL regex rejection and DOMPurify XSS stripping in `tests/unit/sanitize.test.ts`
+- [x] T012 [P] [US2] Write unit tests for salted SHA-256 IP hashing in `tests/unit/ip.test.ts`
+- [x] T013 [P] [US2] Write unit tests for in-memory sliding window rate limiter in `tests/unit/rate-limit.test.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T014 [US2] Implement input sanitization and anti-phishing URL rejection helper in `src/lib/security/sanitize.ts`
-- [ ] T015 [US2] Implement salted SHA-256 client IP hashing utility in `src/lib/security/ip.ts`
-- [ ] T016 [US2] Implement hybrid sliding-window rate limiter with database fallback in `src/lib/security/rate-limit.ts`
-- [ ] T017 [US2] Integrate IP hashing, rate limiting, and sanitization gates into `src/actions/submit-rsvp.ts`
+- [x] T014 [US2] Implement input sanitization and anti-phishing URL rejection helper in `src/lib/security/sanitize.ts`
+- [x] T015 [US2] Implement salted SHA-256 client IP hashing utility in `src/lib/security/ip.ts`
+- [x] T016 [US2] Implement hybrid sliding-window rate limiter with database fallback in `src/lib/security/rate-limit.ts`
+- [x] T017 [US2] Integrate IP hashing, rate limiting, and sanitization gates into `src/actions/submit-rsvp.ts`
 
 **Checkpoint**: User Story 1 dan 2 beroperasi terpadu dengan perlindungan keamanan zero-trust penuh.
 
@@ -81,11 +81,11 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 ### Tests for User Story 3 (TDD - Test-First) ⚠️
 
-- [ ] T018 [P] [US3] Write unit tests verifying immutability of financial constants in `tests/unit/wedding-data.test.ts`
+- [x] T018 [P] [US3] Write unit tests verifying immutability of financial constants in `tests/unit/wedding-data.test.ts`
 
 ### Implementation for User Story 3
 
-- [ ] T019 [US3] Implement server-only immutable financial gift configuration `WEDDING_GIFT_CONFIG` with `as const` in `src/lib/config/wedding-data.ts`
+- [x] T019 [US3] Implement server-only immutable financial gift configuration `WEDDING_GIFT_CONFIG` with `as const` in `src/lib/config/wedding-data.ts`
 
 **Checkpoint**: Data rekening kado pernikahan terkunci aman secara permanen.
 
@@ -99,11 +99,11 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 ### Tests for User Story 4 (TDD - Test-First) ⚠️
 
-- [ ] T020 [P] [US4] Write unit tests for emergency kill switch behavior in Server Action in `tests/unit/submit-rsvp.test.ts`
+- [x] T020 [P] [US4] Write unit tests for emergency kill switch behavior in Server Action in `tests/unit/submit-rsvp.test.ts`
 
 ### Implementation for User Story 4
 
-- [ ] T021 [US4] Implement `EMERGENCY_FEATURE_FLAGS` in `src/lib/config/wedding-data.ts` and integrate perimeter check in `src/actions/submit-rsvp.ts`
+- [x] T021 [US4] Implement `EMERGENCY_FEATURE_FLAGS` in `src/lib/config/wedding-data.ts` and integrate perimeter check in `src/actions/submit-rsvp.ts`
 
 **Checkpoint**: Seluruh 4 User Story beroperasi sempurna dan dapat diuji secara independen.
 
@@ -113,9 +113,9 @@ Dokumen ini mendefinisikan rincian seluruh tugas implementasi yang terurut berda
 
 **Purpose**: Menerapkan Content Security Policy (CSP) di middleware dan menjalankan verifikasi mutu komprehensif.
 
-- [ ] T022 [P] Write unit tests for HTTP security headers and CSP directives in `tests/unit/middleware.test.ts`
-- [ ] T023 Implement Next.js security middleware with static strict CSP, HSTS, X-Frame-Options, and nosniff in `src/middleware.ts`
-- [ ] T024 Execute end-to-end verification commands (`pnpm test`, `pnpm typecheck`, `pnpm lint`) and validate quickstart scenarios in `specs/001-backend-security/quickstart.md`
+- [x] T022 [P] Write unit tests for HTTP security headers and CSP directives in `tests/unit/middleware.test.ts`
+- [x] T023 Implement Next.js security middleware with static strict CSP, HSTS, X-Frame-Options, and nosniff in `src/middleware.ts`
+- [x] T024 Execute end-to-end verification commands (`pnpm test`, `pnpm typecheck`, `pnpm lint`) and validate quickstart scenarios in `specs/001-backend-security/quickstart.md`
 
 ---
 

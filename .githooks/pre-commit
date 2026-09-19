@@ -1,0 +1,18 @@
+#!/bin/sh
+# Local CI: Pre-commit Hook
+# Memastikan kode bersih dari error linter dan typecheck sebelum dibuat commit.
+
+echo "🔍 [Local CI] Menjalankan linter & typecheck..."
+
+pnpm lint || {
+  echo "❌ [Local CI] ESLint menemukan kesalahan. Batalkan commit."
+  exit 1
+}
+
+pnpm typecheck || {
+  echo "❌ [Local CI] TypeScript typecheck gagal. Batalkan commit."
+  exit 1
+}
+
+echo "✅ [Local CI] Linter dan Typecheck berhasil."
+exit 0

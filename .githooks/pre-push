@@ -1,0 +1,13 @@
+#!/bin/sh
+# Local CI: Pre-push Hook
+# Menjalankan seluruh rangkaian unit testing sebelum cabang dikirim (push) ke remote repository.
+
+echo "🧪 [Local CI] Menjalankan pengujian unit sebelum push..."
+
+pnpm test || {
+  echo "❌ [Local CI] Pengujian unit gagal. Batalkan push."
+  exit 1
+}
+
+echo "✅ [Local CI] Seluruh pengujian unit berhasil."
+exit 0

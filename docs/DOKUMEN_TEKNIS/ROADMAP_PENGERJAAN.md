@@ -84,24 +84,24 @@ graph TD
 **Tujuan**: Menciptakan momen kemewahan pertama saat tamu membuka undangan dengan transisi amplop fisik-ke-digital dan audio fade-in yang santun.  
 **Acuan SSoT**: [`PRD.md`](./docs/DOKUMEN_TEKNIS/PRD.md) (Bagian 2.2-A & B), [`DESIGN.md`](./docs/DOKUMEN_TEKNIS/DESIGN.md) (Bagian 4.1 & 5.1), [`CODING_STANDARD.md`](./docs/DOKUMEN_TEKNIS/CODING_STANDARD.md)
 
-- [ ] **2.1 Struktur Amplop 3D Realistis (`src/components/opening/VirtualEnvelope.tsx`)**:
+- [x] **2.1 Struktur Amplop 3D Realistis (`src/components/opening/VirtualEnvelope.tsx`)**:
   - Kontainer 3D menggunakan CSS `perspective: 1200px` dan `transform-style: preserve-3d`.
   - Tekstur kertas amplop Kertas Batik (`#E8DCC8`) dengan bayangan realistis bertingkat.
   - Lipatan atas amplop (*top flap*) yang dapat berotasi naik $180^\circ$ pada sumbu X.
   - Kantong amplop (*pocket*) dengan z-index berlapis.
-- [ ] **2.2 Segel Lilin Monogram Interaktif (`src/components/opening/WaxSeal.tsx`)**:
+- [x] **2.2 Segel Lilin Monogram Interaktif (`src/components/opening/WaxSeal.tsx`)**:
   - Bentuk stempel lilin monogram inisial mempelai berpalet Cinde (`#8C2F27`) beraksen Prada Emas (`#C2A05B`).
   - Animasi sentuh: Efek retak mikro, pelepasan segel, dan pemicu rotasi lipatan amplop.
   - Label personalisasi: *"Kepada Bapak/Ibu/Saudara [Nama Tamu]"* dan tombol *"Buka undangan"*.
-- [ ] **2.3 Surat Undangan Meluncur (`src/components/opening/InvitationLetter.tsx`)**:
+- [x] **2.3 Surat Undangan Meluncur (`src/components/opening/InvitationLetter.tsx`)**:
   - Kertas surat Melati (`#FCFAF5`) dengan monogram tipis meluncur keluar dari kantong amplop ke arah atas.
   - Transisi mulus *fade-out* amplop untuk mengekspos halaman utama undangan.
-- [ ] **2.4 Audio Controller & Autoplay Policy Compliance (`src/components/audio/AudioController.tsx`)**:
+- [x] **2.4 Audio Controller & Autoplay Policy Compliance (`src/components/audio/AudioController.tsx`)**:
   - Mematuhi aturan browser: Audio dilarang autoplay saat inisialisasi awal.
   - Audio Context di-*unlock* murni melalui gestur klik segel lilin (*wax seal*).
   - Peningkatan volume linier Web Audio API (`linearRampToValueAtTime`) dari `0.0` ke `0.8` selama $2.5$ detik.
   - Auto-pause saat `document.visibilityState === 'hidden'` untuk hemat baterai dan data seluler.
-- [ ] **2.5 Floating Vinyl Player (`src/components/audio/FloatingVinyl.tsx`)**:
+- [x] **2.5 Floating Vinyl Player (`src/components/audio/FloatingVinyl.tsx`)**:
   - Tombol mengambang elegan di pojok layar berputar kontinu $360^\circ$ saat musik berputar.
   - Menggunakan CSS `animation-play-state: running | paused` (akselerasi GPU).
   - Tombol toggle play/mute dengan umpan balik visual yang halus.

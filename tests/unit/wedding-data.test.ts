@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { WEDDING_GIFT_CONFIG } from '@/lib/config/wedding-data';
+import { WEDDING_GIFT_CONFIG, WEDDING_AUDIO_CONFIG } from '@/lib/config/wedding-data';
 
 describe('Immutable Financial Data Configuration (WEDDING_GIFT_CONFIG)', () => {
   it('defines valid official bank accounts for BCA and Bank Mandiri', () => {
@@ -33,3 +33,21 @@ describe('Immutable Financial Data Configuration (WEDDING_GIFT_CONFIG)', () => {
     expect(Object.isFrozen(WEDDING_GIFT_CONFIG.qris)).toBe(true);
   });
 });
+
+describe('Immutable Audio Configuration (WEDDING_AUDIO_CONFIG)', () => {
+  it('defines valid audio configuration according to SSoT', () => {
+    expect(WEDDING_AUDIO_CONFIG).toBeDefined();
+    expect(WEDDING_AUDIO_CONFIG.src).toBe('/audio/wedding-ambient.mp3');
+    expect(WEDDING_AUDIO_CONFIG.loop).toBe(true);
+    expect(WEDDING_AUDIO_CONFIG.targetVolume).toBe(0.8);
+    expect(WEDDING_AUDIO_CONFIG.fadeDuration).toBe(2.5);
+    expect(WEDDING_AUDIO_CONFIG.microFadeDuration).toBe(0.15);
+    expect(typeof WEDDING_AUDIO_CONFIG.title).toBe('string');
+    expect(typeof WEDDING_AUDIO_CONFIG.artist).toBe('string');
+  });
+
+  it('is frozen and immutable at runtime', () => {
+    expect(Object.isFrozen(WEDDING_AUDIO_CONFIG)).toBe(true);
+  });
+});
+

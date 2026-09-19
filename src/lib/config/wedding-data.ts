@@ -27,6 +27,17 @@ export interface EmergencyFeatureFlags {
   readonly isRealtimeBroadcastActive: boolean;
 }
 
+export interface WeddingAudioConfig {
+  readonly src: string;
+  readonly title: string;
+  readonly artist: string;
+  readonly loop: boolean;
+  readonly targetVolume: number;
+  readonly fadeDuration: number;
+  readonly microFadeDuration: number;
+}
+
+
 function deepFreeze<T extends object>(obj: T): T {
   Object.freeze(obj);
   (Object.getOwnPropertyNames(obj) as Array<keyof T>).forEach((prop) => {
@@ -64,3 +75,14 @@ export const EMERGENCY_FEATURE_FLAGS: EmergencyFeatureFlags = deepFreeze({
   isGuestbookFormActive: true,
   isRealtimeBroadcastActive: true,
 } as const);
+
+export const WEDDING_AUDIO_CONFIG: WeddingAudioConfig = deepFreeze({
+  src: '/audio/wedding-ambient.mp3',
+  title: 'Ketawang Puspawarna (Bespoke Ambient)',
+  artist: 'Gamelan Keraton Surakarta',
+  loop: true,
+  targetVolume: 0.8,
+  fadeDuration: 2.5,
+  microFadeDuration: 0.15,
+} as const);
+

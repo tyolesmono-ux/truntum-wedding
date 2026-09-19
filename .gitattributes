@@ -1,0 +1,29 @@
+# GitHub Linguist Overrides
+# Reference: https://github.com/github-linguist/linguist/blob/master/docs/overrides.md
+
+# AI agent configurations, skills, and third-party tools
+# Mark as vendored and non-detectable so they do not count towards repository language statistics
+.agent/**               linguist-vendored linguist-detectable=false
+.agents/**              linguist-vendored linguist-detectable=false
+.claude/**              linguist-vendored linguist-detectable=false
+.gemini/**              linguist-vendored linguist-detectable=false
+.hermes/**              linguist-vendored linguist-detectable=false
+.opencode/**            linguist-vendored linguist-detectable=false
+.specify/**             linguist-vendored linguist-detectable=false
+
+# Skill subdirectories and scripts
+**/skills/**            linguist-vendored linguist-detectable=false
+**/scripts/**           linguist-vendored linguist-detectable=false
+
+# Tooling and configuration files
+*.config.js             linguist-vendored linguist-detectable=false
+*.config.mjs            linguist-vendored linguist-detectable=false
+*.config.ts             linguist-vendored linguist-detectable=false
+
+# Documentation and specification files
+docs/**                 linguist-documentation
+specs/**                linguist-documentation
+*.md                    linguist-documentation
+
+# Core application source code
+src/**                  linguist-detectable=true

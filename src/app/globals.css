@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surfaces (SSoT DESIGN.md) */
+  --bg: #F6F1E7;          /* Gading Keraton / Latar Utama */
+  --surface: #FCFAF5;     /* Melati / Kartu, Modal, Surat */
+  --surface-alt: #E8DCC8; /* Kertas Batik / Permukaan Amplop */
+  --bg-dark: #15120F;     /* Malam Wulung / Latar Gelap & Galeri */
+  --surface-dark: #221D18;/* Permukaan Malam */
+
+  /* Typography */
+  --fg: #231F1B;          /* Wulung / Heading & Teks Utama */
+  --fg-body: #4A3E33;     /* Teks Body Halus */
+  --fg-muted: #8A7862;    /* Teks Muted */
+  --fg-on-dark: #EFE6D6;  /* Teks Gading di Latar Gelap */
+
+  /* Brand & Accents */
+  --brand: #6B4423;       /* Sogan Tua / Brand, Tombol Utama */
+  --brand-soft: #B07D4A;  /* Sogan Muda / Garis Sekunder */
+  --gold: #C2A05B;        /* Prada Emas / Ornamen, Wax Seal */
+  --gold-light: #D9BE85;  /* Prada Terang / Label di Latar Gelap */
+  --accent: #8C2F27;      /* Cinde / Lilin Segel, Error */
+  --success: #7E8C74;     /* Gadung Mlati / Status Sukses */
+
+  /* Dividers & Borders */
+  --line: #E0D3BC;        /* Border Lembut */
+  --line-strong: #C9B896; /* Border Tegas & Garis Truntum */
+}
+
+@layer base {
+  body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-jost), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-bodoni), serif;
+  }
+}

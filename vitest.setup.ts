@@ -5,3 +5,9 @@ process.env.IP_SALT_SECRET = process.env.IP_SALT_SECRET || 'test-salt-secret-key
 process.env.TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || '1x0000000000000000000000000000000AA';
 process.env.NEXT_PUBLIC_SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://mock.supabase.co';
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'mock-anon-key';
+
+// Polyfill PointerEvent for Motion gestures in JSDOM
+if (typeof window !== 'undefined' && !window.PointerEvent) {
+  window.PointerEvent = window.MouseEvent as unknown as typeof PointerEvent;
+}
+
